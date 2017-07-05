@@ -1,0 +1,24 @@
+{
+  "name": "rules-engine",
+  "version": "0.1.0",
+  "description": " Things Gateway Rules Engine",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mozilla-iot/rules-engine.git"
+  },
+  "author": "Mozilla IoT",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/mozilla-iot/rules-engine/issues"
+  },
+  "homepage": "https://github.com/mozilla-iot/rules-engine#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "jest": "^20.0.4",
+    "node-fetch": "^1.7.1"
+  }
+}

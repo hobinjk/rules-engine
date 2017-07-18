@@ -1,3 +1,6 @@
+const Trigger = require('./Trigger');
+const Property = require('../Property');
+
 class PropertyTrigger extends Trigger {
   constructor(desc) {
     super();

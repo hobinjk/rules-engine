@@ -1,10 +1,9 @@
 const express = require('express');
+const triggers = require('./triggers');
+const actions = require('./actions');
 
 const index = express.Router();
-const express = require('express');
 
-const triggers = require('./triggers');
-const Router = express.Router();
 
 let rules = [];
 
@@ -18,11 +17,13 @@ class APIError extends Error {
   }
 }
 
-index.get('/', function(req, res) {
+index.use('/', express.static('static'));
+
+index.get('/rules', function(req, res) {
   res.send(JSON.stringify(rules));
 });
 
-index.post('/', function(req, res) {
+index.post('/rules', function(req, res) {
   if (!req.body.trigger) {
     response.status(400).send(new APIError('No trigger provided'));
   }
@@ -31,9 +32,14 @@ index.post('/', function(req, res) {
   }
 
   try {
-    rule = Rule.fromDescription(req.body));
+    rule = Rule.fromDescription(req.body);
   } catch(e) {
     response.status(400).send(new APIError('Invalid rule:', e.message));
   }
 
 });
+
+// index.use('/triggers', triggers.router);
+// index.use('/actions', actions.router);
+
+module.exports = index;

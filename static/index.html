@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rules</title>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <ul id="rules">
+      <li class="rule">
+        if
+        <span class="select select-trigger-thing"></span>
+        <span class="select select-trigger-property"></span>
+        is
+        <span class="select select-trigger-type hidden"></span>
+        <span class="select select-trigger-value"></span>
+        <input type="number" class="select select-trigger-value-input hidden" placeholder="0.0" step="0.1"/>
+        then
+        <span class="select select-action-type"></span>
+        <span class="select select-action-thing"></span>
+        <span class="select select-action-property"></span>
+        to
+        <span class="select select-action-value"></span>
+        <input type="number" class="select select-action-value-input hidden" placeholder="0.0" step="0.1"/>
+      </li>
+    </ul>
+    <!-- <a href="#" id="create-rule">Create Rule</a> -->
+    <script src="src/Selector.js"></script>
+    <script src="src/rule.js"></script>
+  </body>
+</html>

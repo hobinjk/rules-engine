@@ -1,0 +1,124 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+@font-face {
+  font-family: 'Zilla Slab';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/fonts/ZillaSlab-Regular.woff2") format("woff2"), url("/fonts/ZillaSlab-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-weight: 700;
+  font-style: normal;
+  src: url("/fonts/ZillaSlab-Bold.woff2") format("woff2"), url("/fonts/ZillaSlab-Bold.woff") format("woff");
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-weight: 400;
+  font-style: italic;
+  src: url("/fonts/ZillaSlab-RegularItalic.woff2") format("woff2"), url("/fonts/ZillaSlab-RegularItalic.woff") format("woff");
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-weight: 700;
+  font-style: italic;
+  src: url("/fonts/ZillaSlab-BoldItalic.woff2") format("woff2"), url("/fonts/ZillaSlab-BoldItalic.woff") format("woff");
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/fonts/opensans-regular.woff2") format("woff2"), url("/fonts/opensans-regular.woff") format("woff");
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-style: normal;
+  src: url("/fonts/opensans-bold.woff2") format("woff2"), url("/fonts/opensans-bold.woff") format("woff");
+}
+
+html {
+  font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.select {
+  position: relative;
+  white-space: nowrap;
+  cursor: pointer;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.selected.with-options {
+  text-decoration: underline;
+  text-decoration-color: black;
+}
+
+.selected.with-options:after {
+  border-top: 0.25em solid black;
+  border-left: 0.25em solid transparent;
+  border-right: 0.25em solid transparent;
+  content: '';
+  position: absolute;
+  transform: translate(-50%, -9px);
+  top: 100%;
+  left: 50%;
+  height: 0;
+  width: 0;
+}
+
+#rules, input.select {
+  font-size: 48px;
+}
+
+.rule {
+  list-style-type: none;
+}
+
+
+.options {
+  background: white;
+  border: 2px solid black;
+  display: none;
+  left: 50%;
+  list-style-type: none;
+  padding: 0 0.5rem;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -2px);
+  min-width: 100%;
+  z-index: 10;
+}
+
+.options.shown {
+  display: block;
+}
+.option {
+  text-decoration: underline;
+}
+
+.selected-placeholder {
+  color: #aaa;
+}
+
+.hidden {
+  display: none;
+}
+
+input[type="number"].select {
+  font-family: 'Open Sans', sans-serif;
+  border: 0;
+  cursor: auto;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
+  width: 3em;
+}

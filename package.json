@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mozilla-iot/rules-engine#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "jest": "^20.0.4",
     "node-fetch": "^1.7.1"

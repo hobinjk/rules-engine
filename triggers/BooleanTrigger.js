@@ -1,4 +1,5 @@
 const assert = require('assert');
+const PropertyTrigger = require('./PropertyTrigger');
 
 class BooleanTrigger extends PropertyTrigger {
   constructor(desc) {

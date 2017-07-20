@@ -18,8 +18,14 @@
   "homepage": "https://github.com/mozilla-iot/rules-engine#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "config": "^1.26.1",
     "express": "^4.15.3",
     "jest": "^20.0.4",
-    "node-fetch": "^1.7.1"
+    "node-fetch": "^1.7.1",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.2.0"
   }
 }

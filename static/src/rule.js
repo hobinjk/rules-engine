@@ -34,7 +34,8 @@ function Rule(elt) {
     [{name: 'value', placeholder: true}]
   );
 
-  this.triggerValueInput = this.elt.querySelector('.select-trigger-value-input');
+  this.triggerValueInput =
+    this.elt.querySelector('.select-trigger-value-input');
 
   this.actionType = new Selector(
     this.elt.querySelector('.select-action-type'),
@@ -84,7 +85,8 @@ Rule.prototype.updatePropertySelector = function(propertySelector, thing) {
   propertySelector.updateOptions(properties);
 };
 
-Rule.prototype.updateValueSelector = function(valueSelector, valueInput, property) {
+Rule.prototype.updateValueSelector = function(valueSelector, valueInput,
+    property) {
   if (property.type === 'boolean') {
     valueInput.classList.add('hidden');
     valueSelector.elt.classList.remove('hidden');
@@ -169,4 +171,4 @@ Rule.prototype.toDescription = function() {
   };
 };
 
-var rule = new Rule(document.querySelector('.rule'));
+window.rule = new Rule(document.querySelector('.rule'));

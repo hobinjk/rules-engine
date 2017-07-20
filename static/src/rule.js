@@ -131,7 +131,7 @@ Rule.prototype.toDescription = function() {
   }
   if (trigger.property.type === 'boolean') {
     trigger.type = 'BooleanTrigger';
-    trigger.onValue = this.triggerValue.selectedOption;
+    trigger.onValue = this.triggerValue.selectedOption.value;
   } else if (trigger.property.type === 'number') {
     trigger.type = 'LevelTrigger';
     trigger.levelType = this.triggerType.selectedOption.value;
@@ -157,7 +157,7 @@ Rule.prototype.toDescription = function() {
     action.value = this.actionValue.selectedOption.value;
   } else if (action.property.type === 'number') {
     let value = parseFloat(this.actionValueInput.value);
-    if (isNaN(level)) {
+    if (isNaN(value)) {
       return null;
     }
     action.value = value;

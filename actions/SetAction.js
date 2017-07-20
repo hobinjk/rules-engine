@@ -8,6 +8,7 @@ class SetAction extends Action {
     assert(typeof this.value === this.property.type);
     this.on = false;
   }
+
   setState(state) {
     if (!this.on && state.on) {
       this.on = true;

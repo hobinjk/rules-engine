@@ -1,5 +1,3 @@
-const assert = require('assert');
-
 const actions = {
   Action: require('./Action'),
   SetAction: require('./SetAction'),

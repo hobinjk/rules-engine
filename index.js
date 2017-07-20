@@ -41,6 +41,7 @@ setInterval(function() {
 class APIError extends Error {
   constructor(message) {
     super(message);
+    winston.error('new API Error: ' + message);
   }
 
   toString() {
@@ -50,16 +51,14 @@ class APIError extends Error {
 
 index.use('/', express.static('static'));
 
-index.get('/rules', function(req, res) {
-  res.send(JSON.stringify(engine.rules));
-});
-
-index.post('/rules', function(req, res) {
+function parseRuleFromBody(req, res, next) {
   if (!req.body.trigger) {
     res.status(400).send(new APIError('No trigger provided'));
+    return;
   }
   if (!req.body.action) {
     res.status(400).send(new APIError('No action provided'));
+    return;
   }
 
   let rule = null;
@@ -67,10 +66,43 @@ index.post('/rules', function(req, res) {
     rule = Rule.fromDescription(req.body);
   } catch(e) {
     res.status(400).send(new APIError('Invalid rule:', e.message));
+    return;
+  }
+  req.rule = rule;
+  next();
+}
+
+index.get('/rules', function(req, res) {
+  res.send(JSON.stringify(engine.getRules()));
+});
+
+index.post('/rules', parseRuleFromBody, function(req, res) {
+  let ruleId = engine.addRule(req.rule);
+
+  if (!ruleId) {
+    res.status(500).send(new APIError('Engine failed to add rule'));
   }
 
-  if (rule) {
-    engine.addRule(rule);
+  res.send({id: ruleId});
+});
+
+index.put('/rules/:id', parseRuleFromBody, function(req, res) {
+  try {
+    engine.updateRule(req.params.id, req.rule);
+    res.send({});
+  } catch(e) {
+    res.status(500).send(new APIError('Engine failed to update rule: ' +
+      e.message));
+  }
+});
+
+index.delete('/rules/:id', function(req, res) {
+  try {
+    engine.deleteRule(req.params.id)
+    res.send({});
+  } catch(e) {
+    res.status(500).send(new APIError('Engine failed to delete rule: ' +
+      e.message));
   }
 });
 

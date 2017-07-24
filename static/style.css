@@ -122,3 +122,7 @@ input[type="number"].select {
   text-decoration: underline;
   width: 3em;
 }
+
+#rule-template {
+  display: none;
+}

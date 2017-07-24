@@ -1,15 +1,16 @@
 function Selector(elt, options, onSelection) {
   this.elt = elt;
   this.options = options;
-  this.onSelection = onSelection;
   this.onClick = this.onClick.bind(this);
   this.onSelectedClick = this.onSelectedClick.bind(this);
 
   this.selected = document.createElement('span');
   this.selected.classList.add('selected');
   this.selected.addEventListener('click', this.onSelectedClick);
-  this.select(options[0]);
+  this.select(options[0], true);
   this.elt.appendChild(this.selected);
+
+  this.onSelection = onSelection;
 
   this.createOptionsList();
   this.elt.appendChild(this.optionsList);
@@ -77,19 +78,39 @@ Selector.prototype.onClick = function(event) {
   }
 
   let option = this.options[index];
-  this.select(option);
-  if (this.onSelection) {
-    this.onSelection(option);
-  }
+  this.select(option, true);
   this.hide();
 };
 
-Selector.prototype.select = function(option) {
+/**
+ * Select a single option
+ * @param {Object} option
+ * @param {boolean} isRealOption - If not a real option, confirm that `option`
+ * is present in `this.options`, marking it as an invalid placeholder if not.
+ */
+Selector.prototype.select = function(option, isRealOption) {
+  if (!isRealOption) {
+    for (let realOption of this.options) {
+      // TODO while correct in 100% of current cases, this would be better
+      // served by deep equality
+      if (option.name === realOption.name) {
+        isRealOption = true;
+        break;
+      }
+    }
+    if (!isRealOption) {
+      option.placeholder = true;
+    }
+  }
+
   this.selectedOption = option;
   this.selected.textContent = option.name;
   if (option.placeholder) {
     this.selected.classList.add('selected-placeholder');
   } else {
     this.selected.classList.remove('selected-placeholder');
+  }
+  if (this.onSelection) {
+    this.onSelection(option);
   }
 };

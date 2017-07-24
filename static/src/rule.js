@@ -1,8 +1,12 @@
-let gatewayUrl = 'https://localhost:4443';
-let jwt = '';
+/* global Selector */
 
-function Rule(elt) {
+let ruleTemplate = document.getElementById('rule-template');
+
+function Rule(elt, gateway, desc) {
   this.elt = elt;
+  this.gateway = gateway;
+
+  this.elt.innerHTML = ruleTemplate.innerHTML;
   this.onTriggerThingSelection = this.onTriggerThingSelection.bind(this);
   this.onTriggerPropertySelection = this.onTriggerPropertySelection.bind(this);
 
@@ -65,15 +69,15 @@ function Rule(elt) {
   this.actionValueInput = this.elt.querySelector('.select-action-value-input');
 
   this.updateThingSelectors();
+
+  if (desc) {
+    this.setFromDescription(desc);
+  }
 }
 
 Rule.prototype.updateThingSelectors = function() {
-  fetch(gatewayUrl + '/things?jwt=' + jwt).then(res => {
-    return res.json();
-  }).then(things => {
-    this.triggerThing.updateOptions(things);
-    this.actionThing.updateOptions(things);
-  });
+  this.triggerThing.updateOptions(this.gateway.things);
+  this.actionThing.updateOptions(this.gateway.things);
 };
 
 Rule.prototype.updatePropertySelector = function(propertySelector, thing) {
@@ -122,6 +126,10 @@ Rule.prototype.onActionPropertySelection = function(property) {
   this.updateValueSelector(this.actionValue, this.actionValueInput, property);
 };
 
+/**
+ * Convert this rule into a serialized description
+ * @return {RuleDescription}
+ */
 Rule.prototype.toDescription = function() {
   let trigger = {
     property: this.triggerProperty.selectedOption
@@ -171,4 +179,25 @@ Rule.prototype.toDescription = function() {
   };
 };
 
-window.rule = new Rule(document.querySelector('.rule'));
+/**
+ * Set the properties of this rule based on a serialized description
+ * @param {RuleDescription} desc
+ */
+Rule.prototype.setFromDescription = function(desc) {
+  this.triggerProperty.select(desc.trigger.property, false);
+  if (desc.trigger.type === 'BooleanTrigger') {
+    this.triggerValue.select(desc.trigger.onValue, false);
+  } else if (desc.trigger.type === 'LevelTrigger') {
+    this.triggerType.select(desc.trigger.levelType, false);
+    this.triggerValueInput.value = desc.trigger.level;
+  }
+
+  this.actionProperty.select(desc.action.property, false);
+
+  this.actionType.select(desc.action.type, false);
+  if (desc.action.property.type === 'boolean') {
+    this.actionValue.select(desc.action.value, false);
+  } else if (desc.action.property.type === 'number') {
+    this.actionValueInput.value = desc.action.value;
+  }
+};

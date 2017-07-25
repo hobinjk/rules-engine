@@ -34,9 +34,9 @@ let testRule = Rule.fromDescription({
 });
 engine.addRule(testRule);
 
-setInterval(function() {
-  engine.update();
-}, 1000);
+// setInterval(function() {
+//   engine.update();
+// }, 1000);
 
 class APIError extends Error {
   constructor(message) {
@@ -53,11 +53,11 @@ index.use('/', express.static('static'));
 
 function parseRuleFromBody(req, res, next) {
   if (!req.body.trigger) {
-    res.status(400).send(new APIError('No trigger provided'));
+    res.status(400).send(new APIError('No trigger provided').toString());
     return;
   }
   if (!req.body.action) {
-    res.status(400).send(new APIError('No action provided'));
+    res.status(400).send(new APIError('No action provided').toString());
     return;
   }
 
@@ -65,7 +65,7 @@ function parseRuleFromBody(req, res, next) {
   try {
     rule = Rule.fromDescription(req.body);
   } catch(e) {
-    res.status(400).send(new APIError('Invalid rule:', e.message));
+    res.status(400).send(new APIError('Invalid rule:', e.message).toString());
     return;
   }
   req.rule = rule;
@@ -80,7 +80,7 @@ index.post('/rules', parseRuleFromBody, function(req, res) {
   let ruleId = engine.addRule(req.rule);
 
   if (!ruleId) {
-    res.status(500).send(new APIError('Engine failed to add rule'));
+    res.status(500).send(new APIError('Engine failed to add rule').toString());
   }
 
   res.send({id: ruleId});

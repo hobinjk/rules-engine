@@ -5,12 +5,28 @@ let rulesList = document.getElementById('rules');
 let rules = [];
 let gateway = new Gateway();
 
-gateway.readThings().then(function() {
-  addRuleButton.addEventListener('click', function() {
-    let ruleElt = document.createElement('li');
-    ruleElt.classList.add('rule');
-    let rule = new Rule(ruleElt, gateway);
-    rules.push(rule);
-    rulesList.appendChild(ruleElt);
+function readRules() {
+  return fetch('/rules').then(res => {
+    return res.json();
+  }).then(fetchedRules => {
+    for (let ruleDesc of fetchedRules) {
+      addRule(ruleDesc);
+    }
+  });
+}
+
+function addRule(desc) {
+  let ruleElt = document.createElement('li');
+  ruleElt.classList.add('rule');
+  let rule = new Rule(ruleElt, gateway, desc);
+  rules.push(rule);
+  rulesList.appendChild(ruleElt);
+}
+
+gateway.readThings().then(() => {
+  return readRules();
+}).then(() => {
+  addRuleButton.addEventListener('click', () => {
+    addRule();
   });
 });

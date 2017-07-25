@@ -1,4 +1,4 @@
-function Selector(elt, options, onSelection) {
+function Selector(elt, options) {
   this.elt = elt;
   this.options = options;
   this.onClick = this.onClick.bind(this);
@@ -9,8 +9,6 @@ function Selector(elt, options, onSelection) {
   this.selected.addEventListener('click', this.onSelectedClick);
   this.select(options[0], true);
   this.elt.appendChild(this.selected);
-
-  this.onSelection = onSelection;
 
   this.createOptionsList();
   this.elt.appendChild(this.optionsList);
@@ -110,7 +108,19 @@ Selector.prototype.select = function(option, isRealOption) {
   } else {
     this.selected.classList.remove('selected-placeholder');
   }
-  if (this.onSelection) {
-    this.onSelection(option);
+  let event = new CustomEvent('select', {detail: option, bubbles: true});
+  this.elt.dispatchEvent(event);
+};
+
+/**
+ * Select an existing option based on a criteria function
+ * @param {Function<Object, boolean>} criteria
+ */
+Selector.prototype.selectMatching = function(criteria) {
+  for (let option of this.options) {
+    if (criteria(option)) {
+      this.select(option, true);
+      return;
+    }
   }
 };

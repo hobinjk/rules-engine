@@ -80,7 +80,12 @@ html, body {
 }
 
 .rule {
-  list-style-type: none;
+  list-style: url("/images/bad.png");
+  margin-left: 1rem;
+}
+
+.rule.good {
+  list-style: url("/images/good.png");
 }
 
 
@@ -89,7 +94,7 @@ html, body {
   border: 2px solid black;
   display: none;
   left: 50%;
-  list-style-type: none;
+  list-style: none;
   padding: 0 0.5rem;
   position: absolute;
   top: 0;

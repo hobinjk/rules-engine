@@ -34,9 +34,9 @@ let testRule = Rule.fromDescription({
 });
 engine.addRule(testRule);
 
-// setInterval(function() {
-//   engine.update();
-// }, 1000);
+setInterval(function() {
+  engine.update();
+}, 1000);
 
 class APIError extends Error {
   constructor(message) {

@@ -39,6 +39,7 @@ class Engine {
       throw new Error('Nonexistent rule: ' + ruleId);
     }
     this.rules[ruleId] = rule;
+    rule.id = parseInt(ruleId);
   }
 
   /**

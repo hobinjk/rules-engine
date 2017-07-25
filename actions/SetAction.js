@@ -5,7 +5,8 @@ class SetAction extends Action {
   constructor(desc) {
     super(desc);
     this.value = desc.value;
-    assert(typeof this.value === this.property.type);
+    assert(typeof this.value === this.property.type,
+      'setpoint and property must be same type');
     this.on = false;
   }
 

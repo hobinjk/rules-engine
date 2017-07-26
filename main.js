@@ -26,3 +26,4 @@ server.listen(port, function() {
   console.log('Listening on http://localhost:' + server.address().port);
 });
 
+module.exports = server;

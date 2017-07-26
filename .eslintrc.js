@@ -18,6 +18,9 @@ module.exports = {
   ],
   'rules': {
     'no-console': 0,
+    'no-unused-vars': ['error', {
+      'argsIgnorePattern': '^_'
+    }],
     'max-len': ['error', 80],
     quotes: ['error', 'single', {
       allowTemplateLiterals: true,

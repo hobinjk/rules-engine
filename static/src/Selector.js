@@ -1,3 +1,17 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
+
+/**
+ * Component for selecting a single value from a list of options.
+ * A prettier <select>
+ *
+ * @constructor
+ * @param {Element} elt - root element of component
+ * @param {Array<Option>} options
+ */
 function Selector(elt, options) {
   this.elt = elt;
   this.options = options;
@@ -10,16 +24,16 @@ function Selector(elt, options) {
   this.select(options[0], true);
   this.elt.appendChild(this.selected);
 
-  this.createOptionsList();
-  this.elt.appendChild(this.optionsList);
-}
-
-Selector.prototype.createOptionsList = function() {
   this.optionsList = document.createElement('ul');
   this.optionsList.classList.add('options');
   this.updateOptions(this.options);
-};
+  this.elt.appendChild(this.optionsList);
+}
 
+/**
+ * Update the list of options
+ * @param {Array<Option>} options - new list of options
+ */
 Selector.prototype.updateOptions = function(options) {
   this.options = options;
   this.optionsList.innerHTML = '';
@@ -36,6 +50,10 @@ Selector.prototype.updateOptions = function(options) {
   }
 };
 
+/**
+ * Show the Selector menu
+ * @param {Event} event
+ */
 Selector.prototype.show = function(event) {
   if (this.optionsList.classList.contains('shown')) {
     return;
@@ -45,6 +63,10 @@ Selector.prototype.show = function(event) {
   event.stopPropagation();
 };
 
+/**
+ * Hide the Selector menu
+ * @param {Event} event
+ */
 Selector.prototype.hide = function(event) {
   if (!this.optionsList.classList.contains('shown')) {
     return;
@@ -56,12 +78,20 @@ Selector.prototype.hide = function(event) {
   }
 };
 
+/**
+ * On click of the currently selected option
+ * @param {Event} event
+ */
 Selector.prototype.onSelectedClick = function(event) {
   if (this.selected.classList.contains('with-options')) {
     this.show(event);
   }
 };
 
+/**
+ * On any click when the menu of options is visible
+ * @param {Event} event
+ */
 Selector.prototype.onClick = function(event) {
   let optionElt = event.target;
   if (!optionElt.classList.contains('option')) {

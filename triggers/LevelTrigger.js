@@ -1,3 +1,9 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
+
 const assert = require('assert');
 const PropertyTrigger = require('./PropertyTrigger');
 
@@ -6,6 +12,10 @@ const LevelTriggerTypes = {
   GREATER: 'GREATER'
 };
 
+/**
+ * A trigger which activates when a numerical property is less or greater than
+ * a given level
+ */
 class LevelTrigger extends PropertyTrigger {
   constructor(desc) {
     super(desc);
@@ -17,6 +27,9 @@ class LevelTrigger extends PropertyTrigger {
     this.levelType = desc.levelType;
   }
 
+  /**
+   * @return {State}
+   */
   getState() {
     return this.property.get().then(propValue => {
       let on = false;

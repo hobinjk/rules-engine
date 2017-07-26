@@ -1,7 +1,20 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
+
 /* global Selector */
 
 let ruleTemplate = document.getElementById('rule-template');
 
+/**
+ * UI component representing a Rule
+ * @constructor
+ * @param {Element} elt - Where the component is inserted
+ * @param {Gateway} gateway - The remote gateway to which to talk
+ * @param {RuleDescription?} desc - Optional description of the rule to load
+ */
 function Rule(elt, gateway, desc) {
   this.elt = elt;
   this.gateway = gateway;
@@ -83,11 +96,19 @@ function Rule(elt, gateway, desc) {
   }
 }
 
+/**
+ * Update the options of the thing selectors
+ */
 Rule.prototype.updateThingSelectors = function() {
   this.triggerThing.updateOptions(this.gateway.things);
   this.actionThing.updateOptions(this.gateway.things);
 };
 
+/**
+ * Update the options of a property selector based on a selected thing
+ * @param {Selector} propertySelector
+ * @param {ThingDescription} thing
+ */
 Rule.prototype.updatePropertySelector = function(propertySelector, thing) {
   let properties = Object.keys(thing.properties).map(propKey => {
     return Object.assign({
@@ -97,6 +118,12 @@ Rule.prototype.updatePropertySelector = function(propertySelector, thing) {
   propertySelector.updateOptions(properties);
 };
 
+/**
+ * Update a value selector and value input based on a selected property
+ * @param {Selector} valueSelector
+ * @param {Element} valueInput
+ * @param {PropertyDescription} property
+ */
 Rule.prototype.updateValueSelector = function(valueSelector, valueInput,
     property) {
   if (property.type === 'boolean') {
@@ -146,6 +173,9 @@ Rule.prototype.onSelection = function() {
   });
 };
 
+/**
+ * On selecting the trigger's thing, update the property UI
+ */
 Rule.prototype.onTriggerThingSelection = function(event) {
   let thing = event.detail;
   if (thing.placeholder) {
@@ -154,6 +184,9 @@ Rule.prototype.onTriggerThingSelection = function(event) {
   this.updatePropertySelector(this.triggerProperty, thing);
 };
 
+/**
+ * On selecting the trigger's property, update the value and type UI
+ */
 Rule.prototype.onTriggerPropertySelection = function(event) {
   let property = event.detail;
   if (property.placeholder) {
@@ -167,6 +200,9 @@ Rule.prototype.onTriggerPropertySelection = function(event) {
   }
 };
 
+/**
+ * On selecting the action's thing, update the property UI
+ */
 Rule.prototype.onActionThingSelection = function(event) {
   let thing = event.detail;
   if (thing.placeholder) {
@@ -175,6 +211,9 @@ Rule.prototype.onActionThingSelection = function(event) {
   this.updatePropertySelector(this.actionProperty, thing);
 };
 
+/**
+ * On selecting the action's property, update the value UI
+ */
 Rule.prototype.onActionPropertySelection = function(event) {
   let property = event.detail;
   if (property.placeholder) {
@@ -185,7 +224,7 @@ Rule.prototype.onActionPropertySelection = function(event) {
 
 /**
  * Convert this rule into a serialized description
- * @return {RuleDescription}
+ * @return {RuleDescription?} description or null if not a valid rule
  */
 Rule.prototype.toDescription = function() {
   let trigger = {

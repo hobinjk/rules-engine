@@ -1,9 +1,14 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
+
 const express = require('express');
 const winston = require('winston');
-// const triggers = require('./triggers');
-// const actions = require('./actions');
 const Engine = require('./Engine');
 const Rule = require('./Rule');
+const APIError = require('./APIError');
 
 const index = express.Router();
 
@@ -38,19 +43,15 @@ setInterval(function() {
   engine.update();
 }, 1000);
 
-class APIError extends Error {
-  constructor(message) {
-    super(message);
-    winston.error('new API Error: ' + message);
-  }
-
-  toString() {
-    return JSON.stringify({error: true, message: this.message});
-  }
-}
 
 index.use('/', express.static('static'));
 
+/**
+ * Express middleware for extracting rules from the bodies of requests
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {Function} next
+ */
 function parseRuleFromBody(req, res, next) {
   if (!req.body.trigger) {
     res.status(400).send(new APIError('No trigger provided').toString());
@@ -105,8 +106,5 @@ index.delete('/rules/:id', function(req, res) {
       e.message));
   }
 });
-
-// index.use('/triggers', triggers.router);
-// index.use('/actions', actions.router);
 
 module.exports = index;

@@ -1,6 +1,16 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
+
 const assert = require('assert');
 const Action = require('./Action');
 
+/**
+ * An Action which temporarily sets the target property to
+ * a value before restoring its original value
+ */
 class PulseAction extends Action {
   constructor(desc) {
     super(desc);
@@ -11,6 +21,9 @@ class PulseAction extends Action {
     this.oldValue = null;
   }
 
+  /**
+   * @param {State} state
+   */
   setState(state) {
     if (!this.on && state.on) {
       this.property.get().then(value => {

@@ -8,7 +8,6 @@
 
 let addRuleButton = document.getElementById('add-rule');
 let rulesList = document.getElementById('rules');
-let rules = [];
 let gateway = new Gateway();
 
 /**
@@ -31,8 +30,7 @@ function readRules() {
 function addRule(desc) {
   let ruleElt = document.createElement('li');
   ruleElt.classList.add('rule');
-  let rule = new Rule(ruleElt, gateway, desc);
-  rules.push(rule);
+  new Rule(ruleElt, gateway, desc);
   rulesList.appendChild(ruleElt);
 }
 

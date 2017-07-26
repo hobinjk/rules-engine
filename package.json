@@ -27,7 +27,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "chai": "^4.1.0",
+    "chai-http": "^3.0.0",
     "eslint": "^4.2.0",
     "eslint-plugin-html": "^3.1.1"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/config"]
   }
 }

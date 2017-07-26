@@ -16,28 +16,6 @@ winston.cli();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 let engine = new Engine();
-let testRule = Rule.fromDescription({
-  trigger: {
-    property: {
-      name: 'on',
-      type: 'boolean',
-      href:
-        '/things/tplight-801236A350B261121D731A04EE839B601800478A/properties/on'
-    },
-    type: 'BooleanTrigger',
-    onValue: true
-  },
-  action: {
-    property: {
-      name: 'on',
-      type: 'boolean',
-      href: '/things/philips-hue-001788fffe4f2113-1/properties/on'
-    },
-    type: 'PulseAction',
-    value: true
-  }
-});
-engine.addRule(testRule);
 
 setInterval(function() {
   engine.update();
@@ -74,16 +52,11 @@ function parseRuleFromBody(req, res, next) {
 }
 
 index.get('/rules', function(req, res) {
-  res.send(JSON.stringify(engine.getRules()));
+  res.send(engine.getRules());
 });
 
 index.post('/rules', parseRuleFromBody, function(req, res) {
   let ruleId = engine.addRule(req.rule);
-
-  if (!ruleId) {
-    res.status(500).send(new APIError('Engine failed to add rule').toString());
-  }
-
   res.send({id: ruleId});
 });
 
@@ -92,7 +65,7 @@ index.put('/rules/:id', parseRuleFromBody, function(req, res) {
     engine.updateRule(req.params.id, req.rule);
     res.send({});
   } catch(e) {
-    res.status(500).send(new APIError('Engine failed to update rule: ' +
+    res.status(404).send(new APIError('Engine failed to update rule: ' +
       e.message));
   }
 });
@@ -102,7 +75,7 @@ index.delete('/rules/:id', function(req, res) {
     engine.deleteRule(req.params.id)
     res.send({});
   } catch(e) {
-    res.status(500).send(new APIError('Engine failed to delete rule: ' +
+    res.status(404).send(new APIError('Engine failed to delete rule: ' +
       e.message));
   }
 });

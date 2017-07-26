@@ -5,14 +5,14 @@
  */
 
 const winston = require('winston');
+const Database = require('./Database');
+const Rule = require('./Rule');
 
 /**
  * An engine for running and managing list of rules
  */
 class Engine {
   constructor() {
-    this.rules = {};
-    this.nextRuleId = 0;
   }
 
   /**
@@ -20,56 +20,76 @@ class Engine {
    * @return {Array<Rule>} rules
    */
   getRules() {
-    return Object.keys(this.rules).map(key => {
-      return this.rules[key];
+    if (typeof this.rules === undefined) {
+      return Promise.resolve(this.rules);
+    }
+
+    return Database.getRules().then(ruleDescs => {
+      this.rules = {};
+      for (let ruleId in ruleDescs) {
+        ruleDescs[ruleId].id = parseInt(ruleId);
+        this.rules[ruleId] = Rule.fromDescription(ruleDescs[ruleId]);
+      }
+      return Object.keys(ruleDescs).map(ruleId => {
+        return ruleDescs[ruleId];
+      });
     });
   }
 
   /**
    * Add a new rule to the engine's list
    * @param {Rule} rule
-   * @return {number} rule id
+   * @return {Promise<number>} rule id
    */
   addRule(rule) {
-    let ruleId = this.nextRuleId;
-    this.nextRuleId += 1;
-    rule.id = ruleId;
-    this.rules[ruleId] = rule;
-    return ruleId;
+    return Database.createRule(rule.toDescription()).then(id => {
+      rule.id = id;
+      this.rules[id] = rule;
+      return id;
+    });
   }
 
   /**
    * Update an existing rule
    * @param {number} rule id
    * @param {Rule} rule
+   * @return {Promise}
    */
   updateRule(ruleId, rule) {
     if (!this.rules[ruleId]) {
-      throw new Error('Nonexistent rule: ' + ruleId);
+      return Promise.reject(new Error('Rule ' + ruleId + ' does not exist'));
     }
-    this.rules[ruleId] = rule;
-    rule.id = parseInt(ruleId);
+    return Database.updateRule(ruleId, rule.toDescription()).then(() => {
+      this.rules[ruleId] = rule;
+    });
   }
 
   /**
    * Delete an existing rule
    * @param {number} rule id
+   * @return {Promise}
    */
   deleteRule(ruleId) {
     if (!this.rules[ruleId]) {
-      throw new Error('Nonexistent rule: ' + ruleId);
+      return Promise.reject(
+        new Error('Rule ' + ruleId + ' already does not exist'));
     }
-    delete this.rules[ruleId];
+    return Database.deleteRule(ruleId).then(() => {
+      delete this.rules[ruleId];
+    });
   }
 
   /**
    * Update all active rules
    */
   update() {
+    if (!this.rules) {
+      return;
+    }
     winston.info('engine update');
-    this.getRules().forEach(rule => {
-      rule.update();
-    });
+    for (let ruleId in this.rules) {
+      this.rules[ruleId].update();
+    }
   }
 }
 

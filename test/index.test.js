@@ -27,7 +27,7 @@ let testRule = {
     property: {
       name: 'on',
       type: 'boolean',
-      href: '/things/philips-hue-001788fffe4f2113-1/properties/on'
+      href: '/things/light1/properties/on'
     },
     type: 'PulseAction',
     value: true
@@ -58,6 +58,8 @@ let numberTestRule = {
 };
 
 describe('index router', function() {
+  let ruleId = null;
+
   it('gets a list of 0 rules', async () => {
     const res = await chai.request(server)
       .get('/rules/');
@@ -86,6 +88,7 @@ describe('index router', function() {
 
     expect(res.status).toEqual(200);
     expect(res.body).toHaveProperty('id');
+    ruleId = res.body.id;
 
     res = await chai.request(server)
       .get('/rules/');
@@ -98,7 +101,7 @@ describe('index router', function() {
 
   it('modifies this rule', async () => {
     let res = await chai.request(server)
-      .put('/rules/0')
+      .put('/rules/' + ruleId)
       .send(numberTestRule);
     expect(res.status).toEqual(200);
 
@@ -113,7 +116,7 @@ describe('index router', function() {
 
   it('deletes this rule', async () => {
     let res = await chai.request(server)
-      .delete('/rules/0')
+      .delete('/rules/' + ruleId)
       .send();
     expect(res.status).toEqual(200);
 

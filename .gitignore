@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 *.swp
 static/src/jwt.js
+db.sqlite3

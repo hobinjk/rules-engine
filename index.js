@@ -5,12 +5,14 @@
  */
 
 const express = require('express');
+const PromiseRouter = require('express-promise-router');
+
 const winston = require('winston');
 const Engine = require('./Engine');
 const Rule = require('./Rule');
 const APIError = require('./APIError');
 
-const index = express.Router();
+const index = PromiseRouter();
 
 winston.cli();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -51,18 +53,18 @@ function parseRuleFromBody(req, res, next) {
   next();
 }
 
-index.get('/rules', function(req, res) {
-  res.send(engine.getRules());
+index.get('/rules', async function(req, res) {
+  res.send(await engine.getRules());
 });
 
-index.post('/rules', parseRuleFromBody, function(req, res) {
-  let ruleId = engine.addRule(req.rule);
+index.post('/rules', parseRuleFromBody, async function(req, res) {
+  let ruleId = await engine.addRule(req.rule);
   res.send({id: ruleId});
 });
 
-index.put('/rules/:id', parseRuleFromBody, function(req, res) {
+index.put('/rules/:id', parseRuleFromBody, async function(req, res) {
   try {
-    engine.updateRule(req.params.id, req.rule);
+    await engine.updateRule(parseInt(req.params.id), req.rule);
     res.send({});
   } catch(e) {
     res.status(404).send(new APIError('Engine failed to update rule: ' +
@@ -70,9 +72,9 @@ index.put('/rules/:id', parseRuleFromBody, function(req, res) {
   }
 });
 
-index.delete('/rules/:id', function(req, res) {
+index.delete('/rules/:id', async function(req, res) {
   try {
-    engine.deleteRule(req.params.id)
+    await engine.deleteRule(req.params.id)
     res.send({});
   } catch(e) {
     res.status(404).send(new APIError('Engine failed to delete rule: ' +

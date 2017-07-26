@@ -5,6 +5,9 @@
  */
 
 module.exports = {
+  database: {
+    filename: './db.sqlite3',
+  },
   // The Gateway's URL
   gateway: 'https://localhost:4443',
   // A JWT for authentication, TODO: support an OAuth v2 flow for acquiring

@@ -21,8 +21,10 @@
     "body-parser": "^1.17.2",
     "config": "^1.26.1",
     "express": "^4.15.3",
+    "express-promise-router": "^2.0.0",
     "jest": "^20.0.4",
     "node-fetch": "^1.7.1",
+    "sqlite3": "^3.1.8",
     "winston": "^2.3.1"
   },
   "devDependencies": {
@@ -34,6 +36,9 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/config"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/config"
+    ]
   }
 }

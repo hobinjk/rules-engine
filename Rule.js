@@ -16,12 +16,20 @@ class Rule {
       return this.action.setState(state);
     });
   }
+
+  toDescription() {
+    return this;
+  }
 }
 
 Rule.fromDescription = function(desc) {
   const trigger = triggers.fromDescription(desc.trigger);
   const action = actions.fromDescription(desc.action);
-  return new Rule(trigger, action);
+  let rule = new Rule(trigger, action);
+  if (desc.hasOwnProperty('id')) {
+    rule.id = desc.id;
+  }
+  return rule;
 };
 
 module.exports = Rule;

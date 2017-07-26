@@ -20,12 +20,16 @@ function Rule(elt, gateway, desc) {
   this.gateway = gateway;
 
   this.elt.innerHTML = ruleTemplate.innerHTML;
+  this.onDelete = this.onDelete.bind(this);
   this.onSelection = this.onSelection.bind(this);
   this.onTriggerThingSelection = this.onTriggerThingSelection.bind(this);
   this.onTriggerPropertySelection = this.onTriggerPropertySelection.bind(this);
 
   this.onActionThingSelection = this.onActionThingSelection.bind(this);
   this.onActionPropertySelection = this.onActionPropertySelection.bind(this);
+
+  let deleteElt = this.elt.querySelector('.delete');
+  deleteElt.addEventListener('click', this.onDelete);
 
   let triggerThingElt = this.elt.querySelector('.select-trigger-thing');
   this.triggerThing = new Selector(
@@ -95,6 +99,13 @@ function Rule(elt, gateway, desc) {
     this.setFromDescription(desc);
   }
 }
+
+Rule.prototype.onDelete = function() {
+  if (this.hasOwnProperty('id')) {
+    fetch('/rules/' + this.id, {method: 'DELETE'});
+  }
+  this.elt.parentNode.removeChild(this.elt);
+};
 
 /**
  * Update the options of the thing selectors

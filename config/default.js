@@ -4,9 +4,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
+const path = require('path');
+
 module.exports = {
   database: {
-    filename: './db.sqlite3',
+    filename: path.join(__dirname, 'db.sqlite3'),
   },
   // The Gateway's URL
   gateway: 'https://localhost:4443',

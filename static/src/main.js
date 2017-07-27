@@ -14,7 +14,7 @@ let gateway = new Gateway();
  * @return {Promise<Array<RuleDescription>>}
  */
 function readRules() {
-  return fetch('/rules').then(res => {
+  return fetch('rules').then(res => {
     return res.json();
   }).then(fetchedRules => {
     for (let ruleDesc of fetchedRules) {

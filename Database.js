@@ -7,7 +7,6 @@
 'use strict';
 
 const config = require('config');
-const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 
 function Database() {
@@ -17,20 +16,12 @@ function Database() {
 
 Database.prototype.open = function() {
   let filename = config.get('database.filename');
-  let exists = fs.existsSync(filename);
   this.db = new sqlite3.Database(filename);
-  if (!exists) {
-    this.populate();
-  }
-};
 
-Database.prototype.populate = function() {
   let rulesTableSQL = `CREATE TABLE IF NOT EXISTS rules (
     id INTEGER PRIMARY KEY,
     description TEXT
   );`;
-
-
   this.db.run(rulesTableSQL);
 };
 

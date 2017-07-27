@@ -102,7 +102,7 @@ function Rule(elt, gateway, desc) {
 
 Rule.prototype.onDelete = function() {
   if (this.hasOwnProperty('id')) {
-    fetch('/rules/' + this.id, {method: 'DELETE'});
+    fetch('rules/' + this.id, {method: 'DELETE'});
   }
   this.elt.parentNode.removeChild(this.elt);
 };
@@ -170,10 +170,10 @@ Rule.prototype.onSelection = function() {
   };
   let request = null;
   if (typeof(this.id) !== 'undefined') {
-    request = fetch('/rules/' + this.id, fetchOptions);
+    request = fetch('rules/' + this.id, fetchOptions);
   } else {
     fetchOptions.method = 'POST';
-    request = fetch('/rules/', fetchOptions).then(res => {
+    request = fetch('rules/', fetchOptions).then(res => {
       return res.json();
     }).then(rule => {
       this.id = rule.id;

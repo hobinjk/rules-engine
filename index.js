@@ -19,10 +19,11 @@ winston.cli();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 let engine = new Engine();
-
-setInterval(function() {
-  engine.update();
-}, 1000);
+engine.getRules().then(() => {
+  setInterval(function() {
+    engine.update();
+  }, 1000);
+});
 
 winston.info('path', path.join(__dirname, 'static'));
 index.use('/', express.static(path.join(__dirname, 'static')));

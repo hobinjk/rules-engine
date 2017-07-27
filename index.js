@@ -6,8 +6,9 @@
 
 const express = require('express');
 const PromiseRouter = require('express-promise-router');
-
 const winston = require('winston');
+const path = require('path');
+
 const Engine = require('./Engine');
 const Rule = require('./Rule');
 const APIError = require('./APIError');
@@ -23,8 +24,8 @@ setInterval(function() {
   engine.update();
 }, 1000);
 
-
-index.use('/', express.static('static'));
+winston.info('path', path.join(__dirname, 'static'));
+index.use('/', express.static(path.join(__dirname, 'static')));
 
 /**
  * Express middleware for extracting rules from the bodies of requests

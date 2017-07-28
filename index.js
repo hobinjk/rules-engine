@@ -9,6 +9,7 @@ const PromiseRouter = require('express-promise-router');
 const winston = require('winston');
 const path = require('path');
 
+const Database = require('./Database');
 const Engine = require('./Engine');
 const Rule = require('./Rule');
 const APIError = require('./APIError');
@@ -19,7 +20,9 @@ winston.cli();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 let engine = new Engine();
-engine.getRules().then(() => {
+Database.open().then(() => {
+  return engine.getRules();
+}).then(() => {
   setInterval(function() {
     engine.update();
   }, 1000);

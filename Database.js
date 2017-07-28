@@ -14,6 +14,9 @@ function Database() {
   this.open();
 }
 
+/**
+ * Open the database
+ */
 Database.prototype.open = function() {
   let filename = config.get('database.filename');
   this.db = new sqlite3.Database(filename);
@@ -22,7 +25,7 @@ Database.prototype.open = function() {
     id INTEGER PRIMARY KEY,
     description TEXT
   );`;
-  this.db.run(rulesTableSQL);
+  return this.run(rulesTableSQL, []);
 };
 
 /**

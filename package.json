@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "jest"
+    "test": "npm run lint && jest",
+    "lint": "eslint .",
+    "cov": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "babel-eslint": "^7.2.3",
     "chai": "^4.1.0",
     "chai-http": "^3.0.0",
+    "codecov": "^2.2.0",
     "eslint": "^4.2.0",
     "eslint-plugin-html": "^3.1.1"
   },

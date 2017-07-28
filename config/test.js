@@ -10,7 +10,5 @@ module.exports = {
   },
   // The Gateway's URL
   gateway: 'https://localhost:4443',
-  // A JWT for authentication, TODO: support an OAuth v2 flow for acquiring
-  // this
-  jwt: require('../static/src/jwt.js')
+  jwt: 'no jwt for test'
 };

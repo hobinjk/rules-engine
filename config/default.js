@@ -4,9 +4,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
+const fs = require('fs');
 const path = require('path');
 
-module.exports = {
+const config = {
   database: {
     filename: path.join(__dirname, 'db.sqlite3'),
   },
@@ -14,5 +15,12 @@ module.exports = {
   gateway: 'https://localhost:4443',
   // A JWT for authentication, TODO: support an OAuth v2 flow for acquiring
   // this
-  jwt: require('../static/src/jwt.js')
+  jwt: null
 };
+
+let jwtPath =  path.join(__dirname, '../static/src/jwt.js');
+if (fs.existsSync(jwtPath)) {
+  config.jwt = require('../static/src/jwt.js');
+}
+
+module.exports = config;

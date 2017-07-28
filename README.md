@@ -1,18 +1,20 @@
 # rules-engine
-Things Gateway Rules Engine
+Things Gateway Rules Engine Prototype
 
 The rules engine takes a list of rules and communicates with the gateway to
-translate the rules into effects on things.
+translate the rules into effects on things. This is an early-stage
+implementation that still needs testing and functionality improvements before
+it will approach production-ready.
 
 ## Running the rules engine
 
 To run the rules engine at this stage, you need to provide a valid JWT in
-`config/default.js`. You will also need a gateway configured to allow CORS. If
-this gateway isn't at `localhost:4443` you will have to update
+`static/src/jwt.js`. You will also need a gateway configured to allow CORS. If
+this gateway isn't at `https://localhost:4443` you will have to update
 `config/default.js` accordingly.
 
-Once you have all of this squared away, the engine can then be run with `node
-main.js`.
+Once you have all of this squared away, the engine can then be run with `npn
+start`.
 
 ## Design
 

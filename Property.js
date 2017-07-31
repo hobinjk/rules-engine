@@ -8,16 +8,21 @@ const assert = require('assert');
 const config = require('config');
 const fetch = require('node-fetch');
 const winston = require('winston');
+const EventEmitter = require('events').EventEmitter;
+const WebSocket = require('ws');
+const Events = require('./Events');
 
 /**
  * Utility to support operations on Thing's properties
  */
-class Property {
+class Property extends EventEmitter {
   /**
    * Create a Property from a descriptor returned by the WoT API
    * @param {PropertyDescription} desc
    */
   constructor(desc) {
+    super();
+
     assert(desc.type);
     assert(desc.href);
 
@@ -31,6 +36,8 @@ class Property {
     }
     const parts = this.href.split('/');
     this.name = parts[parts.length - 1];
+
+    this.openWebSocket();
   }
 
   /**
@@ -68,6 +75,32 @@ class Property {
       },
       body: JSON.stringify(data),
       cors: true
+    });
+  }
+
+  openWebSocket() {
+    const thingHref = this.href.split('/properties')[0];
+    const wsHref = config.get('gateway').replace(/^http/, 'ws') + thingHref +
+      '?jwt=' + config.get('jwt');
+
+    const ws = new WebSocket(wsHref);
+
+    ws.on('message', text => {
+      winston.info('message', {
+        href: this.href,
+        text: text
+      });
+
+      let msg = JSON.parse(text);
+      if (msg.messageType === 'propertyStatus') {
+        if (msg.data.hasOwnProperty(this.name)) {
+          winston.info('emit', {
+            event: Events.VALUE_CHANGED,
+            data: msg.data[this.name]
+          });
+          this.emit(Events.VALUE_CHANGED, msg.data[this.name]);
+        }
+      }
     });
   }
 }

@@ -1,20 +1,24 @@
-const winston = require('winston');
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
+ */
 
 const actions = require('./actions');
 const triggers = require('./triggers');
+const Events = require('./Events');
 
 class Rule {
   constructor(trigger, action) {
     this.trigger = trigger;
     this.action = action;
+
+    this.onTriggerStateChanged = this.onTriggerStateChanged.bind(this);
+    this.trigger.on(Events.STATE_CHANGED, this.onTriggerStateChanged);
   }
 
-  update() {
-    winston.info('rule update');
-    return this.trigger.getState().then(state => {
-      winston.info('rule state', {state: state});
-      return this.action.setState(state);
-    });
+  onTriggerStateChanged(state) {
+    this.action.setState(state);
   }
 
   toDescription() {

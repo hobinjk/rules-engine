@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
-const winston = require('winston');
 const Database = require('./Database');
 const Rule = require('./Rule');
 
@@ -77,19 +76,6 @@ class Engine {
     return Database.deleteRule(ruleId).then(() => {
       delete this.rules[ruleId];
     });
-  }
-
-  /**
-   * Update all active rules
-   */
-  update() {
-    if (!this.rules) {
-      return;
-    }
-    winston.info('engine update');
-    for (let ruleId in this.rules) {
-      this.rules[ruleId].update();
-    }
   }
 }
 

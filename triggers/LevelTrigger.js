@@ -5,6 +5,7 @@
  */
 
 const assert = require('assert');
+const Events = require('../Events');
 const PropertyTrigger = require('./PropertyTrigger');
 
 const LevelTriggerTypes = {
@@ -28,27 +29,26 @@ class LevelTrigger extends PropertyTrigger {
   }
 
   /**
+   * @param {number} propValue
    * @return {State}
    */
-  getState() {
-    return this.property.get().then(propValue => {
-      let on = false;
+  onValueChanged(propValue) {
+    let on = false;
 
-      switch (this.type) {
-        case LevelTriggerTypes.LESS:
-          if (propValue < this.level) {
-            on = true;
-          }
-          break;
-        case LevelTriggerTypes.GREATER:
-          if (propValue > this.level) {
-            on = true;
-          }
-          break;
-      }
+    switch (this.type) {
+      case LevelTriggerTypes.LESS:
+        if (propValue < this.level) {
+          on = true;
+        }
+        break;
+      case LevelTriggerTypes.GREATER:
+        if (propValue > this.level) {
+          on = true;
+        }
+        break;
+    }
 
-      return {on: on, value: propValue};
-    });
+    this.emit(Events.STATE_CHANGED, {on: on, value: propValue});
   }
 }
 

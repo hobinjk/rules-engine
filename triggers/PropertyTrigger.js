@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
+const Events = require('../Events');
 const Trigger = require('./Trigger');
 const Property = require('../Property');
 
@@ -14,6 +15,11 @@ class PropertyTrigger extends Trigger {
   constructor(desc) {
     super();
     this.property = new Property(desc.property);
+    this.onValueChanged = this.onValueChanged.bind(this);
+    this.property.on(Events.VALUE_CHANGED, this.onValueChanged);
+  }
+
+  onValueChanged(_value) {
   }
 }
 

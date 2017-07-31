@@ -5,6 +5,7 @@
  */
 
 const assert = require('assert');
+const Events = require('../Events');
 const PropertyTrigger = require('./PropertyTrigger');
 
 /**
@@ -20,16 +21,15 @@ class BooleanTrigger extends PropertyTrigger {
   }
 
   /**
+   * @param {boolean} propValue
    * @return {State}
    */
-  getState() {
-    return this.property.get().then(propValue => {
-      if (propValue === this.onValue) {
-        return {on: true, value: propValue};
-      } else {
-        return {on: false, value: propValue};
-      }
-    });
+  onValueChanged(propValue) {
+    if (propValue === this.onValue) {
+      this.emit(Events.STATE_CHANGED, {on: true, value: propValue});
+    } else {
+      this.emit(Events.STATE_CHANGED, {on: false, value: propValue});
+    }
   }
 }
 

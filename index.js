@@ -22,10 +22,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 let engine = new Engine();
 Database.open().then(() => {
   return engine.getRules();
-}).then(() => {
-  setInterval(function() {
-    engine.update();
-  }, 1000);
 });
 
 winston.info('path', path.join(__dirname, 'static'));

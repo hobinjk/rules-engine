@@ -48,6 +48,18 @@ Selector.prototype.updateOptions = function(options) {
   if (this.options.length > 0 && !this.options[0].placeholder) {
     this.selected.classList.add('with-options');
   }
+
+  if (this.selectedOption) {
+    let didSelect = this.selectMatching(option => {
+      return option.name === this.selectedOption.name;
+    });
+
+    if (!didSelect) {
+      this.select(this.selectedOption, false);
+    }
+  } else {
+    this.select(options[0], true);
+  }
 };
 
 /**
@@ -145,12 +157,14 @@ Selector.prototype.select = function(option, isRealOption) {
 /**
  * Select an existing option based on a criteria function
  * @param {Function<Object, boolean>} criteria
+ * @return {boolean} whether selection happened
  */
 Selector.prototype.selectMatching = function(criteria) {
   for (let option of this.options) {
     if (criteria(option)) {
       this.select(option, true);
-      return;
+      return true;
     }
   }
+  return false;
 };

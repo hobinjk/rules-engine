@@ -18,6 +18,9 @@ const LevelTriggerTypes = {
  * a given level
  */
 class LevelTrigger extends PropertyTrigger {
+  /**
+   * @param {TriggerDescription} desc
+   */
   constructor(desc) {
     super(desc);
     assert(this.property.type === 'number');
@@ -26,6 +29,19 @@ class LevelTrigger extends PropertyTrigger {
 
     this.level = desc.level;
     this.levelType = desc.levelType;
+  }
+
+  /**
+   * @return {TriggerDescription}
+   */
+  toDescription() {
+    return Object.assign(
+      super.toDescription(),
+      {
+        level: this.level,
+        levelType: this.levelType
+      }
+    );
   }
 
   /**

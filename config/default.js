@@ -9,7 +9,7 @@ const path = require('path');
 
 const config = {
   database: {
-    filename: path.join(__dirname, 'db.sqlite3'),
+    filename: path.join(__dirname, '../db.sqlite3'),
   },
   // The Gateway's URL
   gateway: 'https://localhost:4443',

@@ -16,10 +16,29 @@ class PropertyTrigger extends Trigger {
     super();
     this.property = new Property(desc.property);
     this.onValueChanged = this.onValueChanged.bind(this);
+  }
+
+  /**
+   * @return {TriggerDescription}
+   */
+  toDescription() {
+    return Object.assign(
+      super.toDescription(),
+      {property: this.property.toDescription()}
+    );
+  }
+
+  start() {
+    this.property.start();
     this.property.on(Events.VALUE_CHANGED, this.onValueChanged);
   }
 
   onValueChanged(_value) {
+  }
+
+  stop() {
+    this.property.removeListener(Events.VALUE_CHANGED, this.onValueChanged);
+    this.property.stop();
   }
 }
 

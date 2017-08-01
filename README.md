@@ -13,7 +13,7 @@ To run the rules engine at this stage, you need to provide a valid JWT in
 this gateway isn't at `https://localhost:4443` you will have to update
 `config/default.js` accordingly.
 
-Once you have all of this squared away, the engine can then be run with `npn
+Once you have all of this squared away, the engine can then be run with `npm
 start`.
 
 ## Design

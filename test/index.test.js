@@ -2,6 +2,9 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../main.js');
 
+jest.mock('node-fetch');
+jest.mock('ws');
+
 function pFinal(p) {
   return Promise.resolve(p).catch((v) => v);
 }

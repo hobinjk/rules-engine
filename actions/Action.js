@@ -20,6 +20,16 @@ class Action {
   }
 
   /**
+   * @return {ActionDescription}
+   */
+  toDescription() {
+    return {
+      type: this.type,
+      property: this.property.toDescription()
+    };
+  }
+
+  /**
    * Set the state of Action based on a trigger
    * @param {State} _state
    */

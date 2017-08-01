@@ -13,11 +13,24 @@ const PropertyTrigger = require('./PropertyTrigger');
  * equal to a given value, `onValue`
  */
 class BooleanTrigger extends PropertyTrigger {
+  /**
+   * @param {TriggerDescription} desc
+   */
   constructor(desc) {
     super(desc);
     assert(this.property.type === 'boolean');
     assert(typeof(desc.onValue) === 'boolean');
     this.onValue = desc.onValue;
+  }
+
+  /**
+   * @return {TriggerDescription}
+   */
+  toDescription() {
+    return Object.assign(
+      super.toDescription(),
+      {onValue: this.onValue}
+    );
   }
 
   /**

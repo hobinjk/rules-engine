@@ -12,6 +12,9 @@ const Action = require('./Action');
  * a value before restoring its original value
  */
 class PulseAction extends Action {
+  /**
+   * @param {ActionDescription} desc
+   */
   constructor(desc) {
     super(desc);
     this.value = desc.value;
@@ -19,6 +22,16 @@ class PulseAction extends Action {
       'setpoint and property must be same type');
     this.on = false;
     this.oldValue = null;
+  }
+
+  /**
+   * @return {ActionDescription}
+   */
+  toDescription() {
+    return Object.assign(
+      super.toDescription(),
+      {value: this.value}
+    );
   }
 
   /**

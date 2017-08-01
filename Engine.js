@@ -19,18 +19,24 @@ class Engine {
    * @return {Array<Rule>} rules
    */
   getRules() {
-    if (typeof this.rules === undefined) {
-      return Promise.resolve(this.rules);
+    let rulesPromise = Promise.resolve(this.rules);
+
+    if (!this.rules) {
+      rulesPromise = Database.getRules().then(ruleDescs => {
+        this.rules = {};
+        for (let ruleId in ruleDescs) {
+          ruleDescs[ruleId].id = parseInt(ruleId);
+          this.rules[ruleId] = Rule.fromDescription(ruleDescs[ruleId]);
+          this.rules[ruleId].start();
+        }
+        console.log('loaded rules', this.rules);
+        return this.rules;
+      });
     }
 
-    return Database.getRules().then(ruleDescs => {
-      this.rules = {};
-      for (let ruleId in ruleDescs) {
-        ruleDescs[ruleId].id = parseInt(ruleId);
-        this.rules[ruleId] = Rule.fromDescription(ruleDescs[ruleId]);
-      }
-      return Object.keys(ruleDescs).map(ruleId => {
-        return ruleDescs[ruleId];
+    return rulesPromise.then(rules => {
+      return Object.keys(rules).map(ruleId => {
+        return rules[ruleId];
       });
     });
   }
@@ -44,6 +50,7 @@ class Engine {
     return Database.createRule(rule.toDescription()).then(id => {
       rule.id = id;
       this.rules[id] = rule;
+      rule.start();
       return id;
     });
   }
@@ -58,8 +65,11 @@ class Engine {
     if (!this.rules[ruleId]) {
       return Promise.reject(new Error('Rule ' + ruleId + ' does not exist'));
     }
+    rule.id = ruleId;
     return Database.updateRule(ruleId, rule.toDescription()).then(() => {
+      this.rules[ruleId].stop();
       this.rules[ruleId] = rule;
+      rule.start();
     });
   }
 
@@ -74,6 +84,7 @@ class Engine {
         new Error('Rule ' + ruleId + ' already does not exist'));
     }
     return Database.deleteRule(ruleId).then(() => {
+      this.rules[ruleId].stop();
       delete this.rules[ruleId];
     });
   }

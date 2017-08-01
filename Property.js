@@ -23,6 +23,8 @@ class Property extends EventEmitter {
   constructor(desc) {
     super();
 
+    this.originator = new Error().stack;
+
     assert(desc.type);
     assert(desc.href);
 
@@ -37,7 +39,27 @@ class Property extends EventEmitter {
     const parts = this.href.split('/');
     this.name = parts[parts.length - 1];
 
-    this.openWebSocket();
+    this.onMessage = this.onMessage.bind(this);
+    this.ws = null;
+    this.id = Math.floor(Math.random() * 100000);
+  }
+
+  /**
+   * @return {PropertyDescription}
+   */
+  toDescription() {
+    let desc = {
+      type: this.type,
+      href: this.href,
+      name: this.name
+    };
+    if (this.unit) {
+      desc.unit = this.unit;
+    }
+    if (this.description) {
+      desc.description = this.description;
+    }
+    return desc;
   }
 
   /**
@@ -51,7 +73,7 @@ class Property extends EventEmitter {
    * @return {Promise} resolves to property's value
    */
   get() {
-    winston.info('property got', {name: this.name});
+    winston.info('property get', {name: this.name});
     return fetch(this.getHref()).then(res => {
       return res.json();
     }).then(data => {
@@ -78,30 +100,37 @@ class Property extends EventEmitter {
     });
   }
 
-  openWebSocket() {
+  start() {
     const thingHref = this.href.split('/properties')[0];
     const wsHref = config.get('gateway').replace(/^http/, 'ws') + thingHref +
       '?jwt=' + config.get('jwt');
 
-    const ws = new WebSocket(wsHref);
+    this.ws = new WebSocket(wsHref);
+    this.ws.on('message', this.onMessage);
+  }
 
-    ws.on('message', text => {
-      winston.info('message', {
-        href: this.href,
-        text: text
-      });
-
-      let msg = JSON.parse(text);
-      if (msg.messageType === 'propertyStatus') {
-        if (msg.data.hasOwnProperty(this.name)) {
-          winston.info('emit', {
-            event: Events.VALUE_CHANGED,
-            data: msg.data[this.name]
-          });
-          this.emit(Events.VALUE_CHANGED, msg.data[this.name]);
-        }
+  onMessage(text) {
+    let msg = JSON.parse(text);
+    if (msg.messageType === 'propertyStatus') {
+      if (msg.data.hasOwnProperty(this.name)) {
+        winston.info('emit', {
+          event: Events.VALUE_CHANGED,
+          data: msg.data[this.name]
+        });
+        this.emit(Events.VALUE_CHANGED, msg.data[this.name]);
       }
-    });
+    }
+  }
+
+  stop() {
+    if (this.ws) {
+      this.ws.removeListener('message', this.onMessage);
+      if (this.ws.readyState === WebSocket.OPEN) {
+        this.ws.close();
+      }
+    } else {
+      winston.warn(this.constructor.name + '.stop was not started');
+    }
   }
 }
 

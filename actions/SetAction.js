@@ -12,12 +12,25 @@ const Action = require('./Action');
  * a value when triggered
  */
 class SetAction extends Action {
+  /**
+   * @param {ActionDescription} desc
+   */
   constructor(desc) {
     super(desc);
     this.value = desc.value;
     assert(typeof this.value === this.property.type,
       'setpoint and property must be same type');
     this.on = false;
+  }
+
+  /**
+   * @return {ActionDescription}
+   */
+  toDescription() {
+    return Object.assign(
+      super.toDescription(),
+      {value: this.value}
+    );
   }
 
   /**

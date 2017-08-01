@@ -10,9 +10,12 @@ const winston = require('winston');
  * A simple helper class for sending JSON-formatted errors to clients
  */
 class APIError extends Error {
-  constructor(message) {
+  constructor(message, originalError) {
     super(message);
-    winston.error('new API Error: ' + message);
+    if (originalError) {
+      this.message += ': ' + originalError.message;
+    }
+    winston.error('new API Error: ' + this.message, originalError.stack);
   }
 
   toString() {

@@ -15,8 +15,13 @@ class Trigger extends EventEmitter {
     this.type = this.constructor.name;
   }
 
-  getState() {
-    throw new Error('Unimplemented');
+  /**
+   * @return {TriggerDescription}
+   */
+  toDescription() {
+    return {
+      type: this.type
+    };
   }
 }
 

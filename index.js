@@ -8,6 +8,7 @@ const express = require('express');
 const PromiseRouter = require('express-promise-router');
 const winston = require('winston');
 const path = require('path');
+const storage = require('node-persist');
 
 const Database = require('./Database');
 const Engine = require('./Engine');
@@ -18,6 +19,8 @@ const index = PromiseRouter();
 
 winston.cli();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+storage.initSync();
 
 let engine = new Engine();
 Database.open().then(() => {
@@ -85,5 +88,14 @@ index.delete('/rules/:id', async function(req, res) {
       new APIError('Engine failed to delete rule', e).toString());
   }
 });
+
+index.use('/jwt', async function(req, res) {
+  let jwt = await storage.getItem('RulesEngine.jwt');
+  res.send(jwt);
+});
+
+index.setJWT = function(jwt) {
+  storage.setItemSync('RulesEngine.jwt', jwt);
+};
 
 module.exports = index;

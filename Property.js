@@ -7,6 +7,7 @@
 const assert = require('assert');
 const config = require('config');
 const fetch = require('node-fetch');
+const storage = require('node-persist');
 const winston = require('winston');
 const EventEmitter = require('events').EventEmitter;
 const WebSocket = require('ws');
@@ -66,7 +67,21 @@ class Property extends EventEmitter {
    * @return {String} full property href
    */
   getHref() {
-    return config.get('gateway') + this.href + '?jwt=' + config.get('jwt');
+    return config.get('gateway') + this.href;
+  }
+
+  /**
+   * @return {Object} headers for JWT bearer auth
+   */
+  headerAuth() {
+    let jwt = storage.getItemSync('RulesEngine.jwt');
+    if (jwt) {
+      return {
+        Authorization: 'Bearer ' + jwt
+      };
+    } else {
+      return {};
+    }
   }
 
   /**
@@ -74,7 +89,11 @@ class Property extends EventEmitter {
    */
   get() {
     winston.info('property get', {name: this.name});
-    return fetch(this.getHref()).then(res => {
+    return fetch(this.getHref(), {
+      headers: Object.assign({
+        'Accept': 'application/json'
+      }, this.headerAuth()),
+    }).then(res => {
       return res.json();
     }).then(data => {
       winston.info('property got', {data: data});
@@ -92,9 +111,10 @@ class Property extends EventEmitter {
     winston.info('property set', {data: data});
     return fetch(this.getHref(), {
       method: 'PUT',
-      headers: {
+      headers: Object.assign({
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      }, this.headerAuth()),
       body: JSON.stringify(data),
       cors: true
     });
@@ -102,8 +122,9 @@ class Property extends EventEmitter {
 
   start() {
     const thingHref = this.href.split('/properties')[0];
+    const jwt = storage.getItemSync('RulesEngine.jwt');
     const wsHref = config.get('gateway').replace(/^http/, 'ws') + thingHref +
-      '?jwt=' + config.get('jwt');
+      '?jwt=' + jwt;
 
     this.ws = new WebSocket(wsHref);
     this.ws.on('message', this.onMessage);

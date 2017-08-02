@@ -20,7 +20,12 @@ function Gateway() {
  * @return {Promise<Array<ThingDescription>>}
  */
 Gateway.prototype.readThings = function() {
-  return fetch(gatewayUrl + '/things?jwt=' + jwt).then(res => {
+  return fetch(gatewayUrl + '/things', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+  }).then(res => {
     return res.json();
   }).then(things => {
     this.things = things;

@@ -9,6 +9,5 @@ module.exports = {
     filename: ':memory:',
   },
   // The Gateway's URL
-  gateway: 'no gateway here :(',
-  jwt: 'no jwt for test'
+  gateway: 'no gateway here :('
 };

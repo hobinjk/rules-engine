@@ -6,8 +6,6 @@
 
 /* global jwt */
 
-let gatewayUrl = 'https://localhost:4443';
-
 /**
  * A remote Gateway
  */
@@ -20,7 +18,7 @@ function Gateway() {
  * @return {Promise<Array<ThingDescription>>}
  */
 Gateway.prototype.readThings = function() {
-  return fetch(gatewayUrl + '/things', {
+  return fetch('/things', {
     headers: {
       Accept: 'application/json',
       Authorization: 'Bearer ' + jwt

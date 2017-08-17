@@ -6,7 +6,11 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require('config');
+const fetch = require('node-fetch');
 const http = require('http');
+const storage = require('node-persist');
+
 const index = require('./index.js');
 
 const app = express();
@@ -17,6 +21,18 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(bodyParser.json());
+
+app.get('/things', async (req, res) => {
+  let jwt = storage.getItemSync('RulesEngine.jwt');
+  let thingsRes = await fetch(config.get('gateway') + '/things', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+  });
+  let things = await thingsRes.json();
+  res.send(JSON.stringify(things));
+});
 
 app.use('/', index);
 

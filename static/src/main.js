@@ -4,9 +4,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
-/* global Gateway, Rule */
+/* global Gateway, RuleCard */
 
-let addRuleButton = document.getElementById('add-rule');
+let createRuleButton = document.getElementById('create-rule');
 let rulesList = document.getElementById('rules');
 let gateway = new Gateway();
 
@@ -16,28 +16,31 @@ let gateway = new Gateway();
 function readRules() {
   return fetch('rules').then(res => {
     return res.json();
-  }).then(fetchedRules => {
-    for (let ruleDesc of fetchedRules) {
-      addRule(ruleDesc);
-    }
+   }).then(fetchedRules => {
+     for (let ruleDesc of fetchedRules) {
+       addRuleCard(ruleDesc);
+     }
   });
 }
 
+let nextId = 0;
 /**
- * Add a rule, optionally filling it with the data from a RuleDescription
- * @param {RuleDescription?} desc
+ * Add a rule, filling it with the data from a RuleDescription
+ * @param {RuleDescription} desc
  */
-function addRule(desc) {
-  let ruleElt = document.createElement('li');
+function addRuleCard(desc) {
+  let ruleElt = document.createElement('div');
   ruleElt.classList.add('rule');
-  new Rule(ruleElt, gateway, desc);
+  new RuleCard(ruleElt, nextId, desc);
+  nextId += 1;
   rulesList.appendChild(ruleElt);
 }
 
 gateway.readThings().then(() => {
   return readRules();
 }).then(() => {
-  addRuleButton.addEventListener('click', () => {
-    addRule();
+  createRuleButton.addEventListener('click', () => {
+    console.warn('soon');
+    // addRule();
   });
 });

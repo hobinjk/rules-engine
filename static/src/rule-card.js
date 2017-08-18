@@ -4,9 +4,19 @@ function RuleCard(elt, id, desc) {
   this.desc = desc;
 
     this.elt.innerHTML = `
+      <div class="rule-edit-overlay">
+        <div class="rule-delete-button"></div>
+        <input class="rule-edit-button" type="button" value="Edit Rule"/>
+      </div>
       <div class="rule-preview">
-        <div class="device-icon trigger"></div>
-        <div class="device-icon action"></div>
+        <div class="device-block trigger">
+          <img class="device-icon" src="images/onoff.svg" width="48px"
+               height="48px"/>
+        </div>
+        <div class="device-block action">
+          <img class="device-icon" src="images/onoff.svg" width="48px"
+               height="48px"/>
+        </div>
       </div>
       <div class="rule-info">
         <h3>${this.getName()}</h3>

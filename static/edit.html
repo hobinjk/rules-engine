@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rules</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="edit.css"/>
+  </head>
+  <body>
+    <div id="title-bar">
+      <input type="button" id="back-button" value="<-"/>
+      <div class="rule-info">
+        <h1>Rule Name</h1>
+        <p>Rule Description</p>
+      </div>
+      <input type="button" id="delete-button" value="trash"/>
+    </div>
+    <div id="rule-area">
+      <div class="device-property-block" style="position: absolute; top: 100px; left: 100px">
+        <div class="device-block trigger">
+          <img class="device-icon" src="images/onoff.svg" width="48px"
+               height="48px"/>
+        </div>
+        <div class="device-property-info">
+          <h3 class="device-name">
+            Living Room Light
+          </h3>
+          <select class="property-select">
+            <option selected>Select Property</option>
+            <option>On</option>
+            <option>Off</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="devices-list">
+      <h3 class="devices-list-header">My Devices</h3>
+      <div class="device">
+        <div class="device-block">
+          <img class="device-icon" src="images/onoff.svg" width="48px"
+               height="48px"/>
+        </div>
+        <p>Device Name</p>
+      </div>
+     <div class="device">
+        <div class="device-block">
+          <img class="device-icon" src="images/onoff.svg" width="48px"
+               height="48px"/>
+        </div>
+        <p>Device Name</p>
+      </div>
+
+    </div>
+    <script src="src/jwt.js"></script>
+    <script src="src/Gateway.js"></script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#title-bar {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  z-index: 10;
+}
+
+#back-button {
+  border: 0;
+  background: #4a4a4a;
+  color: white;
+  width: 120px;
+  height: 120px;
+}
+
+#back-button:active {
+  background: #222;
+}
+
+#delete-button {
+  background: none;
+  border: 0;
+  width: 120px;
+  height: 120px;
+}
+
+#delete-button:active {
+  background: #777;
+}
+
+.rule-info {
+  padding-left: 48px;
+  flex: 1;
+}
+
+.rule-info h1 {
+  color: #4a4a4a;
+  margin: 0;
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.rule-info p {
+  color: #9b9b9b;
+  font-size: 20px;
+}
+
+#rule-area {
+  position: relative;
+  background: url(images/background.png);
+  flex: 1;
+}
+
+#devices-list {
+  box-shadow: 0 -3px 6px rgba(0,0,0,0.16), 0 -3px 6px rgba(0,0,0,0.23);
+  z-index: 10;
+}
+
+#devices-list > h3,
+#devices-list p {
+  padding-left: 14px;
+}
+
+.device-block {
+  display: block;
+}
+
+.device {
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.device-property-block {
+  width: 300px;
+  display: flex;
+}
+
+.device-property-block > .device-block {
+  margin: 0;
+}
+
+.device-property-info {
+  flex: 1;
+  background: white;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.device-name {
+  margin: 0 24px;
+  font-size: 16px;
+  height: 50px;
+  line-height: 50px;
+}
+
+.property-select, .property-select option {
+  background: #4a4a4a;
+  width: 100%;
+  height: 50px;
+  color: white;
+  border: 0;
+  padding: 0 20px;
+  font-size: 16px;
+}

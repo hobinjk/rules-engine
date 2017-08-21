@@ -7,6 +7,13 @@ function RuleCard(elt, id, desc) {
       <div class="rule-edit-overlay">
         <div class="rule-delete-button"></div>
         <input class="rule-edit-button" type="button" value="Edit Rule"/>
+        <div class="rule-delete-dialog">
+          <p>Are you sure you want to remove this rule permanently?</p>
+          <input class="rule-delete-cancel-button" type="button"
+                 value="Cancel"/>
+          <input class="rule-delete-confirm-button" type="button"
+                 value="Remove Rule"/>
+        </div>
       </div>
       <div class="rule-preview">
         <div class="device-block trigger">

@@ -99,12 +99,40 @@ body {
   line-height: 50px;
 }
 
-.property-select, .property-select option {
+.property-select-option {
   background: #4a4a4a;
-  width: 100%;
   height: 50px;
+  line-height: 50px;
   color: white;
-  border: 0;
   padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
   font-size: 16px;
+  display: none;
+  cursor: pointer;
+}
+
+.property-select-option.selected {
+  display: block;
+  position: relative;
+}
+
+.property-select-option.selected:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid white;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  transform: translate(1px, 35px) rotate(135deg);
+}
+
+.property-select.open > .property-select-option {
+  display: block;
+}
+
+.property-select-option:hover {
+  background: #9b9b9b;
 }

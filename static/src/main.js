@@ -31,7 +31,7 @@ let nextId = 0;
 function addRuleCard(desc) {
   let ruleElt = document.createElement('div');
   ruleElt.classList.add('rule');
-  new RuleCard(ruleElt, nextId, desc);
+  new RuleCard(gateway, ruleElt, nextId, desc);
   nextId += 1;
   rulesList.appendChild(ruleElt);
 }

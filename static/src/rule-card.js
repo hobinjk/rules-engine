@@ -1,7 +1,16 @@
-function RuleCard(elt, id, desc) {
+/* global Rule */
+
+/**
+ * @constructorA
+ * @param {Gateway} gateway - global Gateway with which to communicate
+ * @param {Element} elt - element into which to put the card
+ * @param {String} id - unique identifier of the rule card
+ * @param {RuleDescription} desc - rule description to represent
+ */
+function RuleCard(gateway, elt, id, desc) {
   this.elt = elt;
   this.id = id;
-  this.desc = desc;
+  this.rule = new Rule(gateway, desc);
 
     this.elt.innerHTML = `
       <div class="rule-edit-overlay">
@@ -26,8 +35,8 @@ function RuleCard(elt, id, desc) {
         </div>
       </div>
       <div class="rule-info">
-        <h3>${this.getName()}</h3>
-        <p>${this.getHumanDesc()}</p>
+        <h3>${this.rule.name}</h3>
+        <p>${this.rule.toHumanDescription()}</p>
       </div>
       <form class="rule-switch">
         <input type="checkbox" id="rule-switch-${id}"
@@ -35,15 +44,5 @@ function RuleCard(elt, id, desc) {
         <label class="rule-switch-slider" for="rule-switch-${id}"></label>
       </form>
     `;
-}
-
-RuleCard.prototype.getName = function() {
-  return `Rule Name`;
-};
-
-RuleCard.prototype.getHumanDesc = function() {
-  // let thing = things.smething;
-  return `if trigger thing's property is value then set|pulse trigger action's
-  property to value`;
 }
 

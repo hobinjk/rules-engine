@@ -8,18 +8,20 @@
  * Model of a Rule loaded from the Rules Engine
  * @constructor
  * @param {Gateway} gateway - The remote gateway to which to talk
- * @param {RuleDescription} desc - Description of the rule to load
+ * @param {RuleDescription?} desc - Description of the rule to load
  */
 function Rule(gateway, desc) {
   this.gateway = gateway;
-  this.id = desc.id;
-  if (desc.name) {
-    this.name = desc.name;
-  } else {
-    this.name = 'Rule Name';
+  if (desc) {
+    this.id = desc.id;
+    if (desc.name) {
+      this.name = desc.name;
+    } else {
+      this.name = 'Rule Name';
+    }
+    this.trigger = desc.trigger;
+    this.action = desc.action;
   }
-  this.trigger = desc.trigger;
-  this.action = desc.action;
 }
 
 /**

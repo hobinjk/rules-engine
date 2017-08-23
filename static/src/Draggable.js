@@ -7,8 +7,9 @@ function Draggable(elt, afterDown, afterMove, afterUp) {
   this.afterDown = afterDown;
   this.afterMove = afterMove;
   this.afterUp = afterUp;
-  this.startX = 0;
-  this.startY = 0;
+  let parentRect = this.elt.parentNode.getBoundingClientRect();
+  this.baseX = parentRect.left;
+  this.baseY = parentRect.top;
   this.onDown = this.onDown.bind(this);
   this.onMove = this.onMove.bind(this);
   this.onUp = this.onUp.bind(this);
@@ -16,16 +17,6 @@ function Draggable(elt, afterDown, afterMove, afterUp) {
 }
 
 Draggable.prototype.onDown = function(event) {
-  let currentTransform = this.elt.style.transform;
-  let matches = /translate\((\d+)px, *(\d+)px\)/.exec(currentTransform);
-  let x = 0;
-  let y = 0;
-  if (matches) {
-    x = parseFloat(matches[1]);
-    y = parseFloat(matches[2]);
-  }
-  this.startX = event.clientX - x;
-  this.startY = event.clientY - y;
   window.addEventListener('mousemove', this.onMove);
   window.addEventListener('mouseup', this.onUp);
   event.preventDefault();
@@ -35,8 +26,8 @@ Draggable.prototype.onDown = function(event) {
 };
 
 Draggable.prototype.onMove = function(event) {
-  let x = event.clientX - this.startX;
-  let y = event.clientY - this.startY;
+  let x = event.clientX - this.baseX;
+  let y = event.clientY - this.baseY;
 
   this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
   if (this.afterMove) {

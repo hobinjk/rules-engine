@@ -16,23 +16,6 @@
       <input type="button" id="delete-button" value="trash"/>
     </div>
     <div id="rule-area">
-      <div class="device-property-block" style="position: absolute; transform: translate(100px, 100px)">
-        <div class="device-block trigger">
-          <img class="device-icon" src="images/onoff.svg" width="48px"
-               height="48px"/>
-        </div>
-        <div class="device-property-info">
-          <h3 class="device-name">
-            Living Room Light
-          </h3>
-          <!-- ideally this could be a styled select -->
-          <div class="property-select">
-            <div class="property-select-option selected">Select Property</div>
-            <div class="property-select-option" data-value="on">On</div>
-            <div class="property-select-option" data-value="off">Off</div>
-          </div>
-        </div>
-      </div>
     </div>
     <div id="devices-list">
      <div id="delete-area">
@@ -44,6 +27,8 @@
     </div>
     <script src="src/jwt.js"></script>
     <script src="src/Gateway.js"></script>
+    <script src="src/Rule.js"></script>
+    <script src="src/DevicePropertyBlock.js"></script>
     <script src="src/Draggable.js"></script>
     <script src="src/PropertySelect.js"></script>
     <script src="src/edit.js"></script>

@@ -1,50 +1,21 @@
-/* global Draggable, Gateway, PropertySelect */
+/* global DevicePropertyBlock, Gateway, Rule */
 
 let gateway = new Gateway();
+let rule = new Rule(gateway);
+console.log(rule);
 
-let deleteArea = document.getElementById('delete-area');
+let ruleArea = document.getElementById('rule-area');
 let devicesList = document.getElementById('devices-list');
-let devicesListHeight = 0;
-let blocks = document.querySelectorAll('.device-property-block');
 
-function onDown() {
-  let openSelector = this.elt.querySelector('.open');
-  if (openSelector) {
-    openSelector.classList.remove('open');
-  }
-  deleteArea.classList.add('delete-active');
-  this.elt.classList.add('dragging');
-}
+function onDeviceBlockDown(event) {
+  let deviceRect = event.target.getBoundingClientRect();
 
-function onMove(clientX, clientY, relX, relY) {
-  let grid = 40;
-  let x = Math.floor((relX - grid / 2) / grid) * grid
-        + grid / 2;
-  let y = Math.floor((relY - grid / 2) / grid) * grid
-        + grid / 2;
-  if (y < grid / 2) {
-    y = grid / 2;
-  }
-  this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-}
+  let x = deviceRect.left;
+  let y = deviceRect.top;
+  console.log(x, y);
+  let newBlock = new DevicePropertyBlock(ruleArea, this, x, y);
 
-function onUp(clientX, clientY) {
-  if (clientY > window.innerHeight - devicesListHeight) {
-    console.log('would delete');
-  }
-  this.elt.classList.remove('dragging');
-  deleteArea.classList.remove('delete-active');
-}
-
-for (let block of blocks) {
-  new Draggable(block, onDown, onMove, onUp);
-  let propertySelect = block.querySelector('.property-select');
-
-  // Disable dragging started by clicking property select
-  propertySelect.addEventListener('mousedown', function(e) {
-    e.stopPropagation();
-  });
-  new PropertySelect(propertySelect);
+  newBlock.draggable.onDown(event);
 }
 
 function makeDeviceElt(thing) {
@@ -63,8 +34,8 @@ function makeDeviceElt(thing) {
 gateway.readThings().then(things => {
   for (let thing of things) {
     let elt = makeDeviceElt(thing);
-    new Draggable(elt, onDown, onMove, onUp);
+    elt.addEventListener('mousedown', onDeviceBlockDown.bind(thing));
     devicesList.appendChild(elt);
   }
-  devicesListHeight = devicesList.getBoundingClientRect().height;
+  new DevicePropertyBlock(ruleArea, things[0], 100, 100);
 });

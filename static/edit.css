@@ -80,6 +80,7 @@ body {
 }
 
 .device-property-block {
+  position: absolute;
   width: 300px;
   display: flex;
 }

@@ -13,10 +13,6 @@ function Draggable(elt, afterDown, afterMove, afterUp) {
   this.onMove = this.onMove.bind(this);
   this.onUp = this.onUp.bind(this);
   elt.addEventListener('mousedown', this.onDown);
-  this.titleHeight = document.getElementById('title-bar')
-    .getBoundingClientRect().height;
-  this.deviceListHeight = document.getElementById('devices-list')
-    .getBoundingClientRect().height;
 }
 
 Draggable.prototype.onDown = function(event) {

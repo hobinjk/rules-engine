@@ -4,6 +4,7 @@ let gateway = new Gateway();
 
 let deleteArea = document.getElementById('delete-area');
 let devicesList = document.getElementById('devices-list');
+let devicesListHeight = 0;
 let blocks = document.querySelectorAll('.device-property-block');
 
 function onDown() {
@@ -21,17 +22,29 @@ function onMove(clientX, clientY, relX, relY) {
         + grid / 2;
   let y = Math.floor((relY - grid / 2) / grid) * grid
         + grid / 2;
+  if (y < grid / 2) {
+    y = grid / 2;
+  }
   this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 }
 
-function onUp() {
+function onUp(clientX, clientY) {
+  if (clientY > window.innerHeight - devicesListHeight) {
+    console.log('would delete');
+  }
   this.elt.classList.remove('dragging');
   deleteArea.classList.remove('delete-active');
 }
 
 for (let block of blocks) {
   new Draggable(block, onDown, onMove, onUp);
-  new PropertySelect(block.querySelector('.property-select'));
+  let propertySelect = block.querySelector('.property-select');
+
+  // Disable dragging started by clicking property select
+  propertySelect.addEventListener('mousedown', function(e) {
+    e.stopPropagation();
+  });
+  new PropertySelect(propertySelect);
 }
 
 function makeDeviceElt(thing) {
@@ -53,4 +66,5 @@ gateway.readThings().then(things => {
     new Draggable(elt, onDown, onMove, onUp);
     devicesList.appendChild(elt);
   }
+  devicesListHeight = devicesList.getBoundingClientRect().height;
 });

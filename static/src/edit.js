@@ -1,5 +1,6 @@
 /* global Draggable, PropertySelect */
 
+let deleteArea = document.getElementById('delete-area');
 let blocks = document.querySelectorAll('.device-property-block');
 
 function onDown() {
@@ -7,6 +8,7 @@ function onDown() {
   if (openSelector) {
     openSelector.classList.remove('open');
   }
+  deleteArea.classList.add('delete-active');
   this.elt.classList.add('dragging');
 }
 
@@ -21,6 +23,7 @@ function onMove(clientX, clientY, relX, relY) {
 
 function onUp() {
   this.elt.classList.remove('dragging');
+  deleteArea.classList.remove('delete-active');
 }
 
 for (let block of blocks) {

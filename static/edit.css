@@ -132,6 +132,10 @@ body {
   transform: translate(1px, 35px) rotate(135deg);
 }
 
+.property-select.open > .property-select-option.selected:after {
+  display: none;
+}
+
 .property-select.open > .property-select-option {
   display: block;
 }

@@ -27,5 +27,6 @@ Gateway.prototype.readThings = function() {
     return res.json();
   }).then(things => {
     this.things = things;
+    return things;
   });
 };

@@ -127,10 +127,10 @@ const RuleUtils = {
 };
 
 /**
- * Convert the rule's description to a human-readable string
+ * Convert the rule's trigger's description to a human-readable string
  * @return {String}
  */
-Rule.prototype.toHumanDescription = function() {
+Rule.prototype.toTriggerHumanDescription = function() {
   let triggerThing = this.gateway.things.filter(
     RuleUtils.byPropertyHref(this.trigger.property)
   )[0];
@@ -147,6 +147,14 @@ Rule.prototype.toHumanDescription = function() {
     triggerStr += this.trigger.level;
   }
 
+  return triggerStr;
+};
+
+/**
+ * Convert the rule's action's description to a human-readable string
+ * @return {String}
+ */
+Rule.prototype.toActionHumanDescription = function() {
   let actionThing = this.gateway.things.filter(
     RuleUtils.byPropertyHref(this.action.property)
   )[0];
@@ -162,5 +170,22 @@ Rule.prototype.toHumanDescription = function() {
   actionStr += `${actionThing.name} ${this.action.property.name} to `;
   actionStr += this.action.value;
 
+  return actionStr;
+};
+
+/**
+ * Convert the rule's description to a human-readable string
+ * @return {String}
+ */
+Rule.prototype.toHumanDescription = function() {
+  let triggerStr = '???';
+  let actionStr = '???';
+
+  if (this.trigger) {
+    triggerStr = this.toTriggerHumanDescription();
+  }
+  if (this.action) {
+    actionStr = this.toActionHumanDescription();
+  }
   return 'If ' + triggerStr + ' then ' + actionStr;
 };

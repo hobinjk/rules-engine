@@ -2,7 +2,6 @@
 
 let gateway = new Gateway();
 let rule = new Rule(gateway);
-console.log(rule);
 
 let ruleArea = document.getElementById('rule-area');
 let devicesList = document.getElementById('devices-list');
@@ -12,8 +11,7 @@ function onDeviceBlockDown(event) {
 
   let x = deviceRect.left;
   let y = deviceRect.top;
-  console.log(x, y);
-  let newBlock = new DevicePropertyBlock(ruleArea, this, x, y);
+  let newBlock = new DevicePropertyBlock(ruleArea, rule, this, x, y);
 
   newBlock.draggable.onDown(event);
 }
@@ -37,5 +35,4 @@ gateway.readThings().then(things => {
     elt.addEventListener('mousedown', onDeviceBlockDown.bind(thing));
     devicesList.appendChild(elt);
   }
-  new DevicePropertyBlock(ruleArea, things[0], 100, 100);
 });

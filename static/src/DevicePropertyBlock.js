@@ -139,8 +139,8 @@ DevicePropertyBlock.prototype.reset = function() {
 DevicePropertyBlock.prototype.remove = function() {
   this.ruleArea.removeChild(this.elt);
   if (this.role === 'trigger') {
-    this.rule.trigger = null;
+    this.rule.setTrigger(null);
   } else if (this.role === 'action') {
-    this.rule.action = null;
+    this.rule.setAction(null);
   }
 };

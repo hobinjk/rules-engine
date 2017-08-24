@@ -9,9 +9,12 @@
  * @constructor
  * @param {Gateway} gateway - The remote gateway to which to talk
  * @param {RuleDescription?} desc - Description of the rule to load
+ * @param {Function?} onUpdate - Listener for when update is called
  */
-function Rule(gateway, desc) {
+function Rule(gateway, desc, onUpdate) {
   this.gateway = gateway;
+  this.onUpdate = onUpdate;
+
   if (desc) {
     this.id = desc.id;
     if (desc.name) {
@@ -29,6 +32,9 @@ function Rule(gateway, desc) {
  * @return {Promise}
  */
 Rule.prototype.update = function() {
+  if (this.onUpdate) {
+    this.onUpdate();
+  }
   let desc = this.toDescription();
   if (!desc) {
     return Promise.reject('invalid description');
@@ -189,3 +195,22 @@ Rule.prototype.toHumanDescription = function() {
   }
   return 'If ' + triggerStr + ' then ' + actionStr;
 };
+
+/**
+ * Set the trigger of the Rule, updating the server model if valid
+ * @return {Promise}
+ */
+Rule.prototype.setTrigger = function(trigger) {
+  this.trigger = trigger;
+  return this.update();
+};
+
+/**
+ * Set the action of the Rule, updating the server model if valid
+ * @return {Promise}
+ */
+Rule.prototype.setAction = function(action) {
+  this.action = action;
+  return this.update();
+};
+

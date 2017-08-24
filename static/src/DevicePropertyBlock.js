@@ -21,13 +21,8 @@ function DevicePropertyBlock(ruleArea, rule, thing, x, y) {
     </div>`;
   this.deviceBlock = this.elt.querySelector('.device-block');
   let devicePropertyInfo = this.elt.querySelector('.device-property-info');
-  let propertyOptions = Object.keys(thing.properties).map(propName => {
-    return {
-      name: propName[0].toUpperCase() + propName.substr(1),
-      value: propName
-    };
-  });
-  this.propertySelect = new PropertySelect(devicePropertyInfo, propertyOptions);
+
+  this.propertySelect = new PropertySelect(devicePropertyInfo, rule, thing);
 
   this.ruleArea = ruleArea;
   this.ruleTriggerArea = this.ruleArea.querySelector('.drag-hint-trigger');
@@ -105,6 +100,7 @@ DevicePropertyBlock.prototype.onUp = function(clientX, clientY) {
     } else {
       this.role = 'trigger';
       this.ruleTriggerArea.classList.add('inactive');
+      this.propertySelect.updateOptionsForRole(this.role);
     }
   } else if (this.deviceBlock.classList.contains('action')) {
     if (this.ruleActionArea.classList.contains('inactive')) {
@@ -112,6 +108,7 @@ DevicePropertyBlock.prototype.onUp = function(clientX, clientY) {
     } else {
       this.role = 'action';
       this.ruleActionArea.classList.add('inactive');
+      this.propertySelect.updateOptionsForRole(this.role);
     }
   }
 

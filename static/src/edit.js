@@ -1,9 +1,17 @@
 /* global DevicePropertyBlock, Gateway, Rule */
 
 let gateway = new Gateway();
-let rule = new Rule(gateway);
+let rule = new Rule(gateway, null, function() {
+  ruleDescription.textContent = rule.toHumanDescription();
+});
 
 let ruleArea = document.getElementById('rule-area');
+let ruleName = document.querySelector('.rule-info > h1');
+// TODO: on clicking edit button
+ruleName.contentEditable = true;
+let ruleDescription = document.querySelector('.rule-info > p');
+ruleDescription.textContent = rule.toHumanDescription();
+
 let devicesList = document.getElementById('devices-list');
 
 function onDeviceBlockDown(event) {

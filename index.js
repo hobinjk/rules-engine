@@ -64,6 +64,18 @@ index.get('/rules', async function(req, res) {
   }));
 });
 
+
+index.get('/rules/:id', async function(req, res) {
+  try {
+    const id = parseInt(req.params.id);
+    const rule = await engine.getRule(id);
+    res.send(rule.toDescription());
+  } catch(e) {
+    res.status(404).send(
+      new APIError('Engine failed to get rule', e).toString());
+  }
+});
+
 index.post('/rules', parseRuleFromBody, async function(req, res) {
   let ruleId = await engine.addRule(req.rule);
   res.send({id: ruleId});

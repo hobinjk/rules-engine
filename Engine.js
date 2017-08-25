@@ -42,6 +42,19 @@ class Engine {
   }
 
   /**
+   * Get a rule by id
+   * @param {number} id
+   * @return {Promise<Rule>}
+   */
+  getRule(id) {
+    const rule = this.rules[id];
+    if (!rule) {
+      return Promise.reject(new Error('Rule ' + id + ' does not exist'));
+    }
+    return Promise.resolve(rule);
+  }
+
+  /**
    * Add a new rule to the engine's list
    * @param {Rule} rule
    * @return {Promise<number>} rule id

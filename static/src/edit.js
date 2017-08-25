@@ -90,15 +90,11 @@ gateway.readThings().then(things => {
   if (ruleDesc) {
     let areaRect = ruleArea.getBoundingClientRect();
     // Create DevicePropertyBlocks from trigger and action if applicable
-    console.log('rd', ruleDesc);
     if (ruleDesc.trigger) {
-      console.log('uh');
       makeDevicePropertyBlock('trigger', 20,
         areaRect.height / 2);
     }
-    console.log('?????');
     if (ruleDesc.action) {
-      console.log('making action');
       makeDevicePropertyBlock('action', areaRect.width - 320,
         areaRect.height / 2);
     }

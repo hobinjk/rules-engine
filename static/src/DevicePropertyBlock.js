@@ -17,7 +17,7 @@ function DevicePropertyBlock(ruleArea, rule, thing, x, y) {
 
   this.elt = document.createElement('div');
   this.elt.classList.add('device-property-block');
-  this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+  this.snapToGrid(x, y);
   this.elt.innerHTML = `<div class="device-block">
       <img class="device-icon" src="images/onoff.svg" width="48px"
            height="48px"/>
@@ -74,7 +74,30 @@ DevicePropertyBlock.prototype.onDown = function() {
  * On mouse move during a drag
  */
 DevicePropertyBlock.prototype.onMove = function(clientX, clientY, relX, relY) {
-  // Snap coordinates to a 40-pixel grid
+  let devicesList = document.getElementById('devices-list');
+  let devicesListHeight = devicesList.getBoundingClientRect().height;
+  if (clientY > window.innerHeight - devicesListHeight) {
+    this.deviceBlock.classList.remove('trigger');
+    this.deviceBlock.classList.remove('action');
+  } else {
+    if (relX < window.innerWidth / 2) {
+      this.deviceBlock.classList.add('trigger');
+      this.deviceBlock.classList.remove('action');
+    } else {
+      this.deviceBlock.classList.remove('trigger');
+      this.deviceBlock.classList.add('action');
+    }
+  }
+
+  this.snapToGrid(relX, relY);
+};
+
+/**
+ * Snap coordinates to a grid
+ * @param {number} relX - x coordinate relative to ruleArea
+ * @param {number} relY - y coordinate relative to ruleArea
+ */
+DevicePropertyBlock.prototype.snapToGrid = function(relX, relY) {
   let grid = 40;
   let x = Math.floor((relX - grid / 2) / grid) * grid
         + grid / 2;
@@ -84,20 +107,6 @@ DevicePropertyBlock.prototype.onMove = function(clientX, clientY, relX, relY) {
     y = grid / 2;
   }
 
-  let devicesList = document.getElementById('devices-list');
-  let devicesListHeight = devicesList.getBoundingClientRect().height;
-  if (clientY > window.innerHeight - devicesListHeight) {
-    this.deviceBlock.classList.remove('trigger');
-    this.deviceBlock.classList.remove('action');
-  } else {
-    if (x < window.innerWidth / 2) {
-      this.deviceBlock.classList.add('trigger');
-      this.deviceBlock.classList.remove('action');
-    } else {
-      this.deviceBlock.classList.remove('trigger');
-      this.deviceBlock.classList.add('action');
-    }
-  }
   this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 };
 
@@ -150,6 +159,25 @@ DevicePropertyBlock.prototype.reset = function() {
     this.remove();
   }
 };
+
+/**
+ * Initialize based on an existing partial rule
+ */
+DevicePropertyBlock.prototype.setRulePart = function(rulePart) {
+  if (rulePart.trigger) {
+    this.role = 'trigger';
+    this.deviceBlock.classList.add('trigger');
+    this.ruleTriggerArea.classList.add('inactive');
+    this.propertySelect.updateOptionsForRole(this.role);
+    this.propertySelect.selectByValue(rulePart);
+  } else if(rulePart.action) {
+    this.role = 'action';
+    this.deviceBlock.classList.add('action');
+    this.ruleActionArea.classList.add('inactive');
+    this.propertySelect.updateOptionsForRole(this.role);
+    this.propertySelect.selectByValue(rulePart);
+  }
+}
 
 /**
  * Remove the DevicePropertyBlock from the DOM and from its associated rule

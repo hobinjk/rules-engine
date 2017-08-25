@@ -124,7 +124,7 @@ Rule.prototype.toDescription = function() {
 
 // Helper function for selecting the thing corresponding to a property
 const RuleUtils = {
-  byPropertyHref: function byPropertyHref(property) {
+  byProperty: function byProperty(property) {
     return function(option) {
       let optProp = option.properties[property.name];
       return optProp && (optProp.href === property.href);
@@ -138,7 +138,7 @@ const RuleUtils = {
  */
 Rule.prototype.toTriggerHumanDescription = function() {
   let triggerThing = this.gateway.things.filter(
-    RuleUtils.byPropertyHref(this.trigger.property)
+    RuleUtils.byProperty(this.trigger.property)
   )[0];
 
   let triggerStr = `${triggerThing.name} ${this.trigger.property.name} is `;
@@ -162,7 +162,7 @@ Rule.prototype.toTriggerHumanDescription = function() {
  */
 Rule.prototype.toActionHumanDescription = function() {
   let actionThing = this.gateway.things.filter(
-    RuleUtils.byPropertyHref(this.action.property)
+    RuleUtils.byProperty(this.action.property)
   )[0];
 
   let actionStr = '';

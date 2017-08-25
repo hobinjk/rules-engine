@@ -115,6 +115,84 @@ PropertySelect.prototype.updateOptionsForRole = function(role) {
  */
 PropertySelect.prototype.onClick = function(e) {
   this.elt.classList.toggle('open');
+  if (!this.elt.classList.contains('open')) {
+    // We were open, so that was a click to select
+    this.select(e.target);
+
+    let rulePart = JSON.parse(e.target.dataset.value);
+    if (!rulePart) {
+      return;
+    }
+    if (rulePart.trigger) {
+      this.rule.setTrigger(rulePart.trigger);
+    }
+    if (rulePart.action) {
+      this.rule.setAction(rulePart.action);
+    }
+  }
+};
+
+function deepEqual(a, b) {
+  if (typeof(a) !== typeof(b)) {
+    return false;
+  }
+  switch (typeof(a)) {
+    case 'boolean':
+    case 'number':
+    case 'string':
+    case 'undefined':
+      return a === b;
+    case 'object':
+      break;
+    default:
+      console.warn('unknown type', typeof(a));
+      return false;
+  }
+
+  if (a === null) {
+    return b === null;
+  }
+
+  let keysA = Object.keys(a);
+  let keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+  for (let key of keysB) {
+    if (!a.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  for (let key of keysA) {
+    if (!b.hasOwnProperty(key)) {
+      return false;
+    }
+    if (!deepEqual(a[key], b[key])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Select an option by value
+ * @param {Object} value
+ */
+PropertySelect.prototype.selectByValue = function(value) {
+  for (let optionElt of this.elt.querySelectorAll('.property-select-option')) {
+    let optionValue = JSON.parse(optionElt.dataset.value);
+    if (deepEqual(optionValue, value)) {
+      this.select(optionElt);
+      return;
+    }
+  }
+};
+
+/**
+ * Select a specific option
+ * @param {Element} option - option's corresponding element
+ */
+PropertySelect.prototype.select = function(optionElt) {
   let selected = this.elt.querySelector('.selected');
   if (selected) {
     if (!JSON.parse(selected.dataset.value)) {
@@ -123,15 +201,5 @@ PropertySelect.prototype.onClick = function(e) {
       selected.classList.remove('selected');
     }
   }
-  e.target.classList.add('selected');
-  let rulePart = JSON.parse(e.target.dataset.value);
-  if (!rulePart) {
-    return;
-  }
-  if (rulePart.trigger) {
-    this.rule.setTrigger(rulePart.trigger);
-  }
-  if (rulePart.action) {
-    this.rule.setAction(rulePart.action);
-  }
+  optionElt.classList.add('selected');
 };

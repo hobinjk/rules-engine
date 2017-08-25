@@ -1,6 +1,15 @@
 /* global Draggable, PropertySelect */
 
-
+/**
+ * An element representing a device (`thing`) and a property. Can be
+ * drag-and-dropped within `ruleArea` to change its role within `rule`
+ * @constructor
+ * @param {Element} ruleArea
+ * @param {Rule} rule
+ * @param {ThingDescription} thing
+ * @param {number} x
+ * @param {number} y
+ */
 function DevicePropertyBlock(ruleArea, rule, thing, x, y) {
   this.rule = rule;
   this.thing = thing;
@@ -17,7 +26,6 @@ function DevicePropertyBlock(ruleArea, rule, thing, x, y) {
       <h3 class="device-name">
         ${thing.name}
       </h3>
-      <!-- ideally this could be a styled select -->
     </div>`;
   this.deviceBlock = this.elt.querySelector('.device-block');
   let devicePropertyInfo = this.elt.querySelector('.device-property-info');
@@ -37,6 +45,9 @@ function DevicePropertyBlock(ruleArea, rule, thing, x, y) {
     this.onMove, this.onUp);
 }
 
+/**
+ * On mouse down during a drag
+ */
 DevicePropertyBlock.prototype.onDown = function() {
   let openSelector = this.elt.querySelector('.open');
   if (openSelector) {
@@ -59,7 +70,11 @@ DevicePropertyBlock.prototype.onDown = function() {
   }
 };
 
+/**
+ * On mouse move during a drag
+ */
 DevicePropertyBlock.prototype.onMove = function(clientX, clientY, relX, relY) {
+  // Snap coordinates to a 40-pixel grid
   let grid = 40;
   let x = Math.floor((relX - grid / 2) / grid) * grid
         + grid / 2;
@@ -86,6 +101,9 @@ DevicePropertyBlock.prototype.onMove = function(clientX, clientY, relX, relY) {
   this.elt.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 };
 
+/**
+ * On mouse up during a drag
+ */
 DevicePropertyBlock.prototype.onUp = function(clientX, clientY) {
   let devicesList = document.getElementById('devices-list');
   let devicesListHeight = devicesList.getBoundingClientRect().height;

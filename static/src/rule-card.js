@@ -1,7 +1,8 @@
 /* global Rule */
 
 /**
- * @constructorA
+ * A summary of a Rule in card format
+ * @constructor
  * @param {Gateway} gateway - global Gateway with which to communicate
  * @param {Element} elt - element into which to put the card
  * @param {String} id - unique identifier of the rule card

@@ -1,3 +1,12 @@
+/**
+ * A hand-coded <select>-like element which allows the selection of one of a
+ * thing's properties. In a perfect world this would be a styled select, but
+ * this is not a perfect world.
+ * @constructor
+ * @param {Element} parent
+ * @param {Rule} rule
+ * @param {ThingDescription} thing
+ */
 function PropertySelect(parent, rule, thing) {
   this.rule = rule;
   this.thing = thing;
@@ -19,11 +28,20 @@ function PropertySelect(parent, rule, thing) {
   parent.appendChild(this.elt);
 }
 
+/**
+ * Reset the options list to only include the placeholder Select Property
+ */
 PropertySelect.prototype.clearOptions = function() {
   this.elt.innerHTML = '';
   this.addOption('Select Property', null, true);
 };
 
+/**
+ * Add an option to the options list
+ * @param {String} name - text content of option
+ * @param {Object} value - associated data
+ * @param {boolean} selected - if the option is selected
+ */
 PropertySelect.prototype.addOption = function(name, value, selected) {
   let elt = document.createElement('div');
   elt.classList.add('property-select-option');
@@ -35,6 +53,11 @@ PropertySelect.prototype.addOption = function(name, value, selected) {
   this.elt.appendChild(elt);
 };
 
+/**
+ * Updates available options based on the PropertySelector's
+ * DevicePropertyBlock's role.
+ * @param {'trigger'|'action'} role
+ */
 PropertySelect.prototype.updateOptionsForRole = function(role) {
   if (this.role === role) {
     return;
@@ -86,6 +109,10 @@ PropertySelect.prototype.updateOptionsForRole = function(role) {
   }
 };
 
+/**
+ * Select an option when the user clicks it
+ * @param {Event} e
+ */
 PropertySelect.prototype.onClick = function(e) {
   this.elt.classList.toggle('open');
   let selected = this.elt.querySelector('.selected');

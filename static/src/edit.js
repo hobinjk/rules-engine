@@ -14,6 +14,11 @@ ruleDescription.textContent = rule.toHumanDescription();
 
 let devicesList = document.getElementById('devices-list');
 
+/**
+ * Instantiate a draggable DevicePropertyBlock from a template DeviceBlock in
+ * the palette
+ * @param {Event} event
+ */
 function onDeviceBlockDown(event) {
   let deviceRect = event.target.getBoundingClientRect();
 
@@ -24,6 +29,11 @@ function onDeviceBlockDown(event) {
   newBlock.draggable.onDown(event);
 }
 
+/**
+ * Create a device-block from a thing
+ * @param {ThingDescription} thing
+ * @return {Element}
+ */
 function makeDeviceElt(thing) {
   let elt = document.createElement('div');
   elt.classList.add('device');

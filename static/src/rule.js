@@ -66,59 +66,13 @@ Rule.prototype.update = function() {
  * @return {RuleDescription?} description or null if not a valid rule
  */
 Rule.prototype.toDescription = function() {
-  let trigger = {
-    property: this.triggerProperty.selectedOption
-  };
-  if (trigger.property.placeholder) {
+  if (!this.trigger || !this.action) {
     return null;
   }
-  if (trigger.property.type === 'boolean') {
-    trigger.type = 'BooleanTrigger';
-    trigger.onValue = this.triggerValue.selectedOption.value;
-    if (typeof trigger.onValue === 'undefined' ||
-        trigger.onValue.placeholder) {
-      return null;
-    }
-  } else if (trigger.property.type === 'number') {
-    trigger.type = 'LevelTrigger';
-    trigger.levelType = this.triggerType.selectedOption.value;
-    let level = parseFloat(this.triggerValueInput.value);
-    if (isNaN(level)) {
-      return null;
-    }
-    trigger.level = level;
-  } else {
-    return null;
-  }
-
-  let action = {
-    property: this.actionProperty.selectedOption
-  };
-
-  if (action.property.placeholder) {
-    return null;
-  }
-
-  action.type = this.actionType.selectedOption.value;
-  if (action.property.type === 'boolean') {
-    action.value = this.actionValue.selectedOption.value;
-    if (typeof action.value === 'undefined' || action.value.placeholder) {
-      return null;
-    }
-  } else if (action.property.type === 'number') {
-    let value = parseFloat(this.actionValueInput.value);
-    if (isNaN(value)) {
-      return null;
-    }
-    action.value = value;
-  } else {
-    return null;
-  }
-
   return {
     name: this.name,
-    trigger: trigger,
-    action: action
+    trigger: this.trigger,
+    action: this.action
   };
 };
 

@@ -13,37 +13,44 @@ function RuleCard(gateway, elt, id, desc) {
   this.id = id;
   this.rule = new Rule(gateway, desc);
 
-    this.elt.innerHTML = `
-      <div class="rule-edit-overlay">
-        <div class="rule-delete-button"></div>
-        <input class="rule-edit-button" type="button" value="Edit Rule"/>
-        <div class="rule-delete-dialog">
-          <p>Are you sure you want to remove this rule permanently?</p>
-          <input class="rule-delete-cancel-button" type="button"
-                 value="Cancel"/>
-          <input class="rule-delete-confirm-button" type="button"
-                 value="Remove Rule"/>
-        </div>
+  this.elt.innerHTML = `
+    <div class="rule-edit-overlay">
+      <div class="rule-delete-button"></div>
+      <input class="rule-edit-button" type="button" value="Edit Rule"/>
+      <div class="rule-delete-dialog">
+        <p>Are you sure you want to remove this rule permanently?</p>
+        <input class="rule-delete-cancel-button" type="button"
+               value="Cancel"/>
+        <input class="rule-delete-confirm-button" type="button"
+               value="Remove Rule"/>
       </div>
-      <div class="rule-preview">
-        <div class="device-block trigger">
-          <img class="device-icon" src="images/onoff.svg" width="48px"
-               height="48px"/>
-        </div>
-        <div class="device-block action">
-          <img class="device-icon" src="images/onoff.svg" width="48px"
-               height="48px"/>
-        </div>
+    </div>
+    <div class="rule-preview">
+      <div class="device-block trigger">
+        <img class="device-icon" src="images/onoff.svg" width="48px"
+             height="48px"/>
       </div>
-      <div class="rule-info">
-        <h3>${this.rule.name}</h3>
-        <p>${this.rule.toHumanDescription()}</p>
+      <div class="device-block action">
+        <img class="device-icon" src="images/onoff.svg" width="48px"
+             height="48px"/>
       </div>
-      <form class="rule-switch">
-        <input type="checkbox" id="rule-switch-${id}"
-               class="rule-switch-checkbox" checked/>
-        <label class="rule-switch-slider" for="rule-switch-${id}"></label>
-      </form>
-    `;
+    </div>
+    <div class="rule-info">
+      <h3>${this.rule.name}</h3>
+      <p>${this.rule.toHumanDescription()}</p>
+    </div>
+    <form class="rule-switch">
+      <input type="checkbox" id="rule-switch-${id}"
+             class="rule-switch-checkbox" checked/>
+      <label class="rule-switch-slider" for="rule-switch-${id}"></label>
+    </form>
+  `;
+
+  this.onEditButtonClick = this.onEditButtonClick.bind(this);
+  this.editButton = this.elt.querySelector('.rule-edit-button');
+  this.editButton.addEventListener('click', this.onEditButtonClick);
 }
 
+RuleCard.prototype.onEditButtonClick = function() {
+  window.location = 'edit.html?ruleId=' + this.rule.id;
+};

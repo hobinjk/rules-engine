@@ -40,7 +40,6 @@ gateway.readThings().then(() => {
   return readRules();
 }).then(() => {
   createRuleButton.addEventListener('click', () => {
-    console.warn('soon');
-    // addRule();
+    window.location = 'edit.html';
   });
 });

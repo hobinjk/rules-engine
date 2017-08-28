@@ -93,6 +93,7 @@ gateway.readThings().then(things => {
   return rulePromise;
 }).then(function(ruleDesc) {
   function onRuleUpdate() {
+    ruleName.textContent = rule.name || 'Rule Name';
     ruleDescription.textContent = rule.toHumanDescription();
   }
   rule = new Rule(gateway, ruleDesc, onRuleUpdate);

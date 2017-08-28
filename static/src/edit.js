@@ -22,6 +22,11 @@ let ruleDescription = document.querySelector('.rule-info > p');
 
 let devicesList = document.getElementById('devices-list');
 
+let deleteOverlay = document.getElementById('rule-delete-overlay');
+let deleteButton = document.getElementById('delete-button');
+let deleteCancel = document.querySelector('.rule-delete-cancel-button');
+let deleteConfirm = document.querySelector('.rule-delete-confirm-button');
+
 /**
  * Instantiate a draggable DevicePropertyBlock from a template DeviceBlock in
  * the palette
@@ -100,5 +105,19 @@ gateway.readThings().then(things => {
     }
   }
   onRuleUpdate();
+});
+
+deleteButton.addEventListener('click', function() {
+  deleteOverlay.classList.add('active');
+});
+
+deleteCancel.addEventListener('click', function() {
+  deleteOverlay.classList.remove('active');
+});
+
+deleteConfirm.addEventListener('click', function() {
+  rule.delete().then(function() {
+    window.location = 'index.html';
+  });
 });
 

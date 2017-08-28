@@ -43,6 +43,7 @@ Rule.prototype.update = function() {
   let fetchOptions = {
     method: 'PUT',
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(desc)
@@ -59,6 +60,25 @@ Rule.prototype.update = function() {
     });
   }
   return request;
+};
+
+/**
+ * Delete the rule
+ * @return {Promise}
+ */
+Rule.prototype.delete = function() {
+  let fetchOptions = {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+    }
+  };
+
+  if (typeof(this.id) === 'undefined') {
+    return;
+  }
+
+  return fetch('rules/' + this.id, fetchOptions);
 };
 
 /**

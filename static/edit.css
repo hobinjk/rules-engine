@@ -227,3 +227,24 @@ body {
   padding: 0;
   margin: 0;
 }
+
+#rule-delete-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background: rgba(64, 64, 64, 0.8);
+}
+
+.rule-delete-dialog {
+  display: block;
+  font-size: 24px;
+  width: 24rem;
+}
+
+#rule-delete-overlay.active {
+  display: block;
+}

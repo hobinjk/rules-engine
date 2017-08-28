@@ -47,10 +47,37 @@ function RuleCard(gateway, elt, id, desc) {
   `;
 
   this.onEditButtonClick = this.onEditButtonClick.bind(this);
+  this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
+  this.onDeleteCancelClick = this.onDeleteCancelClick.bind(this);
+  this.onDeleteConfirmClick = this.onDeleteConfirmClick.bind(this);
+
   this.editButton = this.elt.querySelector('.rule-edit-button');
   this.editButton.addEventListener('click', this.onEditButtonClick);
+
+  this.deleteButton = this.elt.querySelector('.rule-delete-button');
+  this.deleteButton.addEventListener('click', this.onDeleteButtonClick);
+  this.deleteCancel = this.elt.querySelector('.rule-delete-cancel-button');
+  this.deleteCancel.addEventListener('click', this.onDeleteCancelClick);
+  this.deleteConfirm = this.elt.querySelector('.rule-delete-confirm-button');
+  this.deleteConfirm.addEventListener('click', this.onDeleteConfirmClick);
+
+  this.editOverlay = this.elt.querySelector('.rule-edit-overlay');
 }
 
 RuleCard.prototype.onEditButtonClick = function() {
   window.location = 'edit.html?ruleId=' + this.rule.id;
 };
+
+RuleCard.prototype.onDeleteButtonClick = function() {
+  this.editOverlay.classList.add('delete');
+};
+
+RuleCard.prototype.onDeleteCancelClick = function() {
+  this.editOverlay.classList.remove('delete');
+};
+
+RuleCard.prototype.onDeleteConfirmClick = function() {
+  this.rule.delete();
+  this.elt.parentNode.removeChild(this.elt);
+};
+

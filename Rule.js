@@ -46,6 +46,9 @@ class Rule {
     if (this.hasOwnProperty('id')) {
       desc.id = this.id;
     }
+    if (this.hasOwnProperty('name')) {
+      desc.name = this.name;
+    }
     return desc;
   }
 
@@ -70,6 +73,9 @@ Rule.fromDescription = function(desc) {
   let rule = new Rule(trigger, action);
   if (desc.hasOwnProperty('id')) {
     rule.id = desc.id;
+  }
+  if (desc.hasOwnProperty('name')) {
+    rule.name = desc.name;
   }
   return rule;
 };

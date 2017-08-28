@@ -18,6 +18,10 @@ let ruleArea = document.getElementById('rule-area');
 let ruleName = document.querySelector('.rule-info > h1');
 // TODO: on clicking edit button
 ruleName.contentEditable = true;
+ruleName.addEventListener('blur', function() {
+  rule.name = ruleName.textContent;
+  rule.update();
+});
 let ruleDescription = document.querySelector('.rule-info > p');
 
 let devicesList = document.getElementById('devices-list');

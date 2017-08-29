@@ -15,8 +15,16 @@ if (ruleIdMatches) {
 }
 
 let ruleArea = document.getElementById('rule-area');
-let ruleName = document.querySelector('.rule-info > h1');
-// TODO: on clicking edit button
+let ruleName = document.querySelector('.rule-name');
+let ruleNameCustomize = document.querySelector('.rule-name-customize');
+ruleNameCustomize.addEventListener('click', function() {
+  // Select all of ruleName, from https://stackoverflow.com/questions/6139107/
+  let range = document.createRange();
+  range.selectNodeContents(ruleName);
+  let selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+});
 ruleName.contentEditable = true;
 ruleName.addEventListener('blur', function() {
   rule.name = ruleName.textContent;

@@ -24,6 +24,11 @@ body {
   background: #222;
 }
 
+#back-button > img {
+  margin: 40px;
+  padding: 0;
+}
+
 #delete-button {
   background: none;
   border: 0;
@@ -45,6 +50,13 @@ body {
   margin: 0;
   margin-top: 8px;
   font-weight: normal;
+}
+
+.rule-name-customize {
+  width: 0.7em;
+  height: 0.7em;
+  padding: 0.2em 0.4em;
+  padding-bottom: 0;
 }
 
 .rule-info p {

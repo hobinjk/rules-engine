@@ -8,12 +8,16 @@
   </head>
   <body>
     <div id="title-bar">
-      <a href="index.html" id="back-button">&lt;-</a>
+      <a href="index.html" id="back-button">
+        <img src="images/back-16.svg" alt="Back" width="40" height="40"/>
+      </a>
       <div class="rule-info">
-        <h1>Rule Name</h1>
+        <h1><span class="rule-name">Rule Name</span><img src="images/customize-16.svg" class="rule-name-customize"/></h1>
         <p>Rule Description</p>
       </div>
-      <input type="button" id="delete-button" value="trash"/>
+      <button id="delete-button">
+        <img src="images/delete-16.svg" alt="Delete" width="40" height="40"/>
+      </button>
     </div>
     <div id="rule-area">
       <div id="drag-hint">

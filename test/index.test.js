@@ -38,6 +38,7 @@ let testRule = {
 };
 
 let numberTestRule = {
+  name: 'Number Test Rule',
   trigger: {
     property: {
       name: 'hue',

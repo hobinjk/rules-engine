@@ -102,6 +102,19 @@ describe('index router', function() {
     expect(res.body[0]).toMatchObject(testRule);
   });
 
+  it('gets this rule specifically', async () => {
+    let res = await chai.request(server)
+      .get('/rules/' + ruleId);
+    expect(res.status).toEqual(200);
+    expect(res.body).toMatchObject(testRule);
+  });
+
+  it('fails to get a nonexistent rule specifically', async () => {
+    const err = await pFinal(chai.request(server)
+      .get('/rules/1337'));
+    expect(err.response.status).toEqual(404);
+  });
+
 
   it('modifies this rule', async () => {
     let res = await chai.request(server)

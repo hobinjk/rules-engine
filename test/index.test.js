@@ -41,10 +41,11 @@ let numberTestRule = {
   name: 'Number Test Rule',
   trigger: {
     property: {
-      name: 'hue',
+      name: 'temperature',
       type: 'number',
       href:
-        '/things/light2/properties/hue'
+        '/things/thermostat/properties/temperature',
+      unit: 'celsius'
     },
     type: 'LevelTrigger',
     levelType: 'LESS',
@@ -54,7 +55,8 @@ let numberTestRule = {
     property: {
       name: 'sat',
       type: 'number',
-      href: '/things/light2/properties/sat'
+      href: '/things/light2/properties/sat',
+      description: 'light color saturation'
     },
     type: 'SetAction',
     value: 30

@@ -87,6 +87,28 @@ describe('index router', function() {
     expect(err.response.status).toEqual(400);
   });
 
+  it('fails to create a rule without a trigger', async () => {
+    const brokenTestRule = Object.assign({}, testRule);
+    delete brokenTestRule.trigger;
+
+    const err = await pFinal(chai.request(server)
+      .post('/rules/')
+      .send(brokenTestRule));
+
+    expect(err.response.status).toEqual(400);
+  });
+
+  it('fails to create a rule without a action', async () => {
+    const brokenTestRule = Object.assign({}, testRule);
+    delete brokenTestRule.action;
+
+    const err = await pFinal(chai.request(server)
+      .post('/rules/')
+      .send(brokenTestRule));
+
+    expect(err.response.status).toEqual(400);
+  });
+
   it('creates a rule', async () => {
     let res = await chai.request(server)
       .post('/rules/')

@@ -182,4 +182,14 @@ describe('index router', function() {
     expect(err.response.status).toEqual(404);
   });
 
+  it('sets and gets a jwt', async () => {
+    const jwt = 'not actually a jwt';
+    const index = require('../index.js');
+    index.setJWT(jwt);
+    let res = await chai.request(server)
+      .get('/jwt');
+    expect(res.status).toEqual(200);
+    expect(res.text).toEqual(jwt);
+  });
+
 });

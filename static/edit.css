@@ -57,6 +57,7 @@ body {
   height: 0.7em;
   padding: 0.2em 0.4em;
   padding-bottom: 0;
+  cursor: pointer;
 }
 
 .rule-info p {

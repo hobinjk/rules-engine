@@ -9,7 +9,11 @@ let rule = null;
 const ruleIdMatches = window.location.search.match(/ruleId=(\d+)/)
 if (ruleIdMatches) {
   const ruleId = ruleIdMatches[1];
-  rulePromise = fetch('/rules/' + ruleId).then(function(res) {
+  rulePromise = fetch('rules/' + ruleId, {
+    headers: {
+      Accept: 'application/json'
+    }
+  }).then(function(res) {
     return res.json();
   });
 }

@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.*
  */
 
+/* global apiOptions */
+
 /**
  * Model of a Rule loaded from the Rules Engine
  * @constructor
@@ -40,14 +42,12 @@ Rule.prototype.update = function() {
     return Promise.reject('invalid description');
   }
 
-  let fetchOptions = {
+  let fetchOptions = Object.assign(apiOptions(), {
     method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
     body: JSON.stringify(desc)
-  };
+  });
+  fetchOptions['Content-Type'] = 'application/json';
+
   let request = null;
   if (typeof(this.id) !== 'undefined') {
     request = fetch('rules/' + this.id, fetchOptions);
@@ -67,12 +67,9 @@ Rule.prototype.update = function() {
  * @return {Promise}
  */
 Rule.prototype.delete = function() {
-  let fetchOptions = {
-    method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-    }
-  };
+  let fetchOptions = Object.assign(apiOptions(), {
+    method: 'DELETE'
+  });
 
   if (typeof(this.id) === 'undefined') {
     return;

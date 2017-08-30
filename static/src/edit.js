@@ -1,4 +1,4 @@
-/* global DevicePropertyBlock, Gateway, Rule, RuleUtils */
+/* global DevicePropertyBlock, Gateway, Rule, RuleUtils, apiOptions */
 
 let gateway = new Gateway();
 
@@ -9,11 +9,7 @@ let rule = null;
 const ruleIdMatches = window.location.search.match(/ruleId=(\d+)/)
 if (ruleIdMatches) {
   const ruleId = ruleIdMatches[1];
-  rulePromise = fetch('rules/' + ruleId, {
-    headers: {
-      Accept: 'application/json'
-    }
-  }).then(function(res) {
+  rulePromise = fetch('rules/' + ruleId, apiOptions()).then(function(res) {
     return res.json();
   });
 }
